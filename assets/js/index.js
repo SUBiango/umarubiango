@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   runHero();
   loadNowPreview();
   loadLabPreview();
+  loadNotesPreview();
 });
 
 /* ============================================================
@@ -130,6 +131,61 @@ function loadLabPreview() {
       err.className = 'state-error u-mono';
       err.style.fontSize = 'var(--font-size-sm)';
       err.textContent = 'Could not load lab preview.';
+      container.appendChild(err);
+    });
+}
+
+/* ============================================================
+   NOTES PREVIEW
+   ============================================================ */
+function loadNotesPreview() {
+  var container = document.getElementById('notes-preview');
+  if (!container) return;
+
+  fetch('data/notes-index.json')
+    .then(function(res) {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
+    .then(function(entries) {
+      container.innerHTML = '';
+
+      entries.sort(function(a, b) {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      var recent = entries.slice(0, 2);
+      if (!recent.length) return;
+
+      var list = document.createElement('div');
+      list.className = 'preview-list';
+
+      recent.forEach(function(entry) {
+        var item = document.createElement('a');
+        item.className = 'preview-item preview-item--link';
+        item.href = 'notes/' + entry.slug + '/';
+
+        var title = document.createElement('div');
+        title.className = 'preview-item__title';
+        title.textContent = entry.title;
+
+        var meta = document.createElement('div');
+        meta.className = 'preview-item__meta';
+        meta.textContent = 'notes — ' + entry.date;
+
+        item.appendChild(title);
+        item.appendChild(meta);
+        list.appendChild(item);
+      });
+
+      container.appendChild(list);
+    })
+    .catch(function() {
+      container.innerHTML = '';
+      var err = document.createElement('span');
+      err.className = 'state-error u-mono';
+      err.style.fontSize = 'var(--font-size-sm)';
+      err.textContent = 'Could not load notes preview.';
       container.appendChild(err);
     });
 }

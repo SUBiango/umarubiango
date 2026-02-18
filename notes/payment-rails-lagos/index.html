@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
+  <meta property="og:title" content="Building Payment Rails for Lagos — Umaru Biango">
+  <meta property="og:description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://umarubiango.com/notes/payment-rails-lagos/">
+  <meta property="og:site_name" content="Umaru Biango">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Building Payment Rails for Lagos — Umaru Biango">
+  <meta name="twitter:description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
+  <link rel="canonical" href="https://umarubiango.com/notes/payment-rails-lagos/">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <title>Building Payment Rails for Lagos — Umaru Biango</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="page-wrapper">
+      <a href="../../index.html" class="nav-logo">ub://</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="../../index.html">home</a></li>
+        <li><a href="../../lab.html">lab</a></li>
+        <li><a href="../../notes.html" aria-current="page">notes</a></li>
+        <li><a href="../../how-i-think.html">how i think</a></li>
+        <li><a href="../../now.html">now</a></li>
+        <li><a href="../../contact.html">contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main id="main" tabindex="-1">
+    <div class="page-wrapper">
+      <a class="note-view__back" aria-label="Back to notes list" href="../../notes.html">notes</a>
+      <article>
+        <header class="note-view__header">
+          <h1 class="note-view__title">Building Payment Rails for Lagos</h1>
+          <div class="note-view__meta">
+            <span>2026-02-18</span>
+            <span class="note-view__tags"><span>payments</span><span>emerging-markets</span><span>compliance</span><span>fintech</span></span>
+          </div>
+        </header>
+        <div class="note-body"><p>Six months ago I started building the payments layer for Korporty. I assumed it would take three weeks. It took four months to get to reliable.</p>
+<p>Here&#39;s what I learned.</p>
+<h2>The first assumption that broke</h2>
+<p>Every payment integration I&#39;d seen before was built for the assumption that the network is mostly up, the PSP is mostly responsive, and failures are edge cases you handle gracefully.</p>
+<p>In Lagos, failures are the default state. Success is the edge case you need to engineer for.</p>
+<p>The first week, our webhook delivery rate was 34%. Not because our servers were down — because the mobile networks were congested between 6pm and 9pm every day, and asynchronous callbacks were being dropped silently.</p>
+<h2>What actually works</h2>
+<p><strong>Retry with exponential backoff and jitter.</strong></p>
+<p>Not fixed-interval retries. Not &quot;retry 3 times.&quot; Exponential backoff with randomized jitter so you&#39;re not hammering a recovering endpoint in synchronized bursts.</p>
+<pre><code class="language-javascript">function getRetryDelay(attempt) {
+  const base = 1000; // 1 second
+  const cap = 30000; // 30 seconds max
+  const jitter = Math.random() * 1000;
+  return Math.min(base * Math.pow(2, attempt) + jitter, cap);
+}
+</code></pre>
+<p>After switching to this, our webhook delivery rate in the first 24 hours went from 34% to 91%.</p>
+<p><strong>Multi-PSP routing.</strong></p>
+<p>You cannot depend on a single PSP in Nigeria. Not because they&#39;re bad — because the infrastructure they sit on top of has real constraints. Paystack goes down. Flutterwave has bank-specific issues. Cards issued by Unity Bank fail on one processor but not another.</p>
+<p>Build routing that knows this and responds to it in real time.</p>
+<pre><code class="language-javascript">async function routePayment(payload) {
+  const psp = await selectByRecentSuccessRate(payload);
+  try {
+    return await psp.initiate(payload);
+  } catch (err) {
+    logger.warn(`PSP ${psp.id} failed, falling back`, { err });
+    return await fallbackRoute(payload, psp.id);
+  }
+}
+</code></pre>
+<p><strong>Idempotency everywhere.</strong></p>
+<p>Every payment endpoint takes an idempotency key. Every. Single. One. Because when a client retries a timed-out request, you need to guarantee they&#39;re not charged twice. This is not optional.</p>
+<h2>The compliance layer nobody warns you about</h2>
+<p>CBN regulations in Nigeria require:</p>
+<ul>
+<li>BVN verification for accounts above a transaction threshold</li>
+<li>Specific data retention policies for transaction records</li>
+<li>Explicit consent flows for recurring charges</li>
+</ul>
+<p>None of this is documented clearly anywhere. You learn it from compliance consultants, from reading CBN circulars, and from having a payment provider tell you your integration is rejected at the last review.</p>
+<p>Budget time for this. Budget more than you think.</p>
+<h2>What I&#39;d do differently</h2>
+<ol>
+<li>Start with multi-PSP routing on day one, not as a refactor</li>
+<li>Build the reconciliation system before the payment initiation system</li>
+<li>Talk to a compliance consultant in week one, not month four</li>
+<li>Instrument everything — you cannot debug payment failures you can&#39;t observe</li>
+</ol>
+<h2>The mental model that helps</h2>
+<p>Think of every payment as having three states: <strong>initiated</strong>, <strong>confirmed</strong>, and <strong>settled</strong>. PSPs conflate these. Banks conflate these. Your system should not.</p>
+<p>Initiated means you sent the request. Confirmed means the PSP acknowledged it. Settled means money moved. These can be hours or days apart.</p>
+<p>Build your system around that gap.</p>
+<hr>
+<p>Korporty is in private beta. If you&#39;re building payments infrastructure in West Africa and want to compare notes, reach out.</p>
+</div>
+      </article>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+      <div class="footer-social" aria-label="Social links" role="group">
+        <a href="https://github.com/SUBiango" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.648.5.5 5.648.5 12c0 5.084 3.292 9.395 7.863 10.916.575.106.787-.25.787-.556 0-.275-.012-1.188-.018-2.154-3.2.694-3.875-1.356-3.875-1.356-.525-1.337-1.281-1.694-1.281-1.694-1.05-.719.081-.706.081-.706 1.163.081 1.775 1.194 1.775 1.194 1.031 1.769 2.706 1.256 3.366.962.106-.75.406-1.256.737-1.544-2.556-.287-5.244-1.275-5.244-5.675 0-1.256.45-2.281 1.188-3.087-.119-.294-.519-1.475.112-3.075 0 0 .969-.313 3.175 1.181a11.067 11.067 0 0 1 5.775 0c2.206-1.494 3.175-1.181 3.175-1.181.631 1.6.231 2.781.112 3.075.738.806 1.188 1.831 1.188 3.087 0 4.412-2.694 5.381-5.263 5.662.419.363.794 1.075.794 2.169 0 1.569-.013 2.831-.013 3.213 0 .306.206.669.794.556A11.508 11.508 0 0 0 23.5 12c0-6.352-5.148-11.5-11.5-11.5Z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.25h2.75L16.75 9h-3.25V6.75c0-1.031.281-1.75 1.75-1.75h1.75V2.125A23.74 23.74 0 0 0 14.438 2C11.719 2 9.75 3.656 9.75 6.688V9H7v3.75h2.75V21h3.75Z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/umarubiango/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.756 5.756 0 0 1 22 7.75v8.5A5.756 5.756 0 0 1 16.25 22h-8.5A5.756 5.756 0 0 1 2 16.25v-8.5A5.756 5.756 0 0 1 7.75 2Zm8.5 1.75h-8.5A4.004 4.004 0 0 0 3.75 7.75v8.5a4.004 4.004 0 0 0 4 4h8.5a4.004 4.004 0 0 0 4-4v-8.5a4.004 4.004 0 0 0-4-4Zm-4.25 2.5A5.75 5.75 0 1 1 6.25 12 5.756 5.756 0 0 1 12 6.25Zm0 1.75A4 4 0 1 0 16 12a4.004 4.004 0 0 0-4-4Zm6-2.125a1.125 1.125 0 1 1-1.125 1.125A1.125 1.125 0 0 1 18 5.875Z"/></svg>
+        </a>
+      </div>
+      <p>&copy; 2026 Umaru S. Biango</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+  <script src="../../assets/js/terminal.js"></script>
+  <script>document.addEventListener("DOMContentLoaded",function(){initNav();if(window.Prism){Prism.highlightAll();}});</script>
+</body>
+</html>

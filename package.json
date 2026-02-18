@@ -4,10 +4,11 @@
   "description": "Personal website of Umaru Biango",
   "private": true,
   "scripts": {
+    "generate:notes": "node scripts/generate-note-pages.js",
     "broadcast": "node scripts/broadcast.js"
   },
   "devDependencies": {
-    "gray-matter": "^4.0.3"
+    "gray-matter": "^4.0.3",
+    "marked": "^11.1.1"
   }
 }
-

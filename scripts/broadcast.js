@@ -34,7 +34,7 @@ try {
 }
 
 var API_KEY    = process.env.CONVERTKIT_API_KEY;
-var BASE_URL   = process.env.CONVERTKIT_BASE_URL || 'https://umarubiango.dev';
+var BASE_URL   = process.env.CONVERTKIT_BASE_URL || 'https://umarubiango.com';
 var NOTES_DIR  = path.join(__dirname, '..', 'notes');
 var DRY_RUN    = process.env.DRY_RUN === '1';
 var CK_API     = 'https://api.convertkit.com/v3';
@@ -79,7 +79,7 @@ files.forEach(function(filePath) {
       slug:    fm.slug || slugFromFilename(filename),
       title:   fm.title || filename,
       excerpt: fm.excerpt || '',
-      url:     BASE_URL + '/notes.html#' + (fm.slug || slugFromFilename(filename)),
+      url:     BASE_URL + '/notes/' + (fm.slug || slugFromFilename(filename)) + '/',
     });
   } else {
     var reason = fm.sent === true ? 'already sent' : 'broadcast not set';

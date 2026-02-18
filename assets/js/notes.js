@@ -7,9 +7,16 @@
 'use strict';
 
 var NOTES_INDEX = 'data/notes-index.json';
+var NOTES = [];
+var SELECTED_TAG = '';
+var NOTES_PAGE_URL = new URL('/notes.html', window.location.origin).toString();
+var DEFAULT_NOTES_TITLE = 'Notes — Umaru Biango';
+var DEFAULT_NOTES_DESCRIPTION = 'Long-form notes on building in emerging markets.';
+var TAG_ENRICH_CONCURRENCY = 4;
 
 document.addEventListener('DOMContentLoaded', function() {
   initNav();
+  SELECTED_TAG = getTagFromUrl();
   loadNotesList();
 
   // Handle browser back/forward
@@ -29,42 +36,16 @@ function loadNotesList() {
       return res.json();
     })
     .then(function(notes) {
-      // Sort newest first
+      return enrichNotesWithLimit(notes, TAG_ENRICH_CONCURRENCY);
+    })
+    .then(function(notes) {
       notes.sort(function(a, b) {
         return new Date(b.date) - new Date(a.date);
       });
 
-      list.innerHTML = '';
-
-      if (notes.length === 0) {
-        var empty = document.createElement('li');
-        empty.className = 'u-text-muted u-mono';
-        empty.style.fontSize = 'var(--font-size-sm)';
-        empty.textContent = 'No notes yet.';
-        list.appendChild(empty);
-        return;
-      }
-
-      notes.forEach(function(note) {
-        var li = document.createElement('li');
-        var link = document.createElement('a');
-        link.className = 'note-list-item';
-        link.href = '#' + note.slug;
-        link.setAttribute('data-slug', note.slug);
-
-        var dateEl = document.createElement('span');
-        dateEl.className = 'note-list-item__date';
-        dateEl.textContent = formatDate(note.date);
-
-        var titleEl = document.createElement('span');
-        titleEl.className = 'note-list-item__title';
-        titleEl.textContent = note.title;
-
-        link.appendChild(dateEl);
-        link.appendChild(titleEl);
-        li.appendChild(link);
-        list.appendChild(li);
-      });
+      NOTES = notes;
+      renderTagFilters();
+      renderNotesList();
 
       // Check if we need to open a note from URL hash on load
       handleHash();
@@ -72,6 +53,134 @@ function loadNotesList() {
     .catch(function() {
       list.innerHTML = '<li><span class="state-error u-mono">Could not load notes. Try again later.</span></li>';
     });
+}
+
+function enrichNoteWithTags(note) {
+  if (note.tags && note.tags.length) return Promise.resolve(note);
+
+  return fetch('notes/' + note.slug + '.md')
+    .then(function(res) {
+      if (!res.ok) throw new Error();
+      return res.text();
+    })
+    .then(function(raw) {
+      var parsed = parseFrontmatter(raw);
+      note.tags = Array.isArray(parsed.frontmatter.tags) ? parsed.frontmatter.tags : [];
+      return note;
+    })
+    .catch(function() {
+      note.tags = [];
+      return note;
+    });
+}
+
+function enrichNotesWithLimit(notes, limit) {
+  var enriched = [];
+  var index = 0;
+  var size = Math.max(1, limit || 1);
+
+  function nextBatch() {
+    if (index >= notes.length) return Promise.resolve(enriched);
+
+    var batch = notes.slice(index, index + size);
+    index += size;
+
+    return Promise.all(batch.map(enrichNoteWithTags))
+      .then(function(items) {
+        Array.prototype.push.apply(enriched, items);
+        return nextBatch();
+      });
+  }
+
+  return nextBatch();
+}
+
+function renderTagFilters() {
+  var filters = document.getElementById('notes-tag-filters');
+  if (!filters) return;
+
+  filters.innerHTML = '';
+
+  var uniqueTags = {};
+  NOTES.forEach(function(note) {
+    (note.tags || []).forEach(function(tag) {
+      uniqueTags[tag] = true;
+    });
+  });
+
+  var tags = Object.keys(uniqueTags).sort();
+  if (!tags.length) return;
+
+  var allBtn = createTagButton('all', !SELECTED_TAG, function() {
+    SELECTED_TAG = '';
+    setTagInUrl('');
+    window.location.hash = '';
+    renderTagFilters();
+    renderNotesList();
+  });
+  filters.appendChild(allBtn);
+
+  tags.forEach(function(tag) {
+    var btn = createTagButton(tag, SELECTED_TAG === tag, function() {
+      SELECTED_TAG = tag;
+      setTagInUrl(tag);
+      renderTagFilters();
+      renderNotesList();
+      window.location.hash = '';
+    });
+    filters.appendChild(btn);
+  });
+}
+
+function createTagButton(label, active, onClick) {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'notes-tag-btn' + (active ? ' is-active' : '');
+  btn.textContent = label;
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+
+function renderNotesList() {
+  var list = document.getElementById('notes-list');
+  if (!list) return;
+
+  list.innerHTML = '';
+
+  var filtered = NOTES.filter(function(note) {
+    if (!SELECTED_TAG) return true;
+    return (note.tags || []).indexOf(SELECTED_TAG) !== -1;
+  });
+
+  if (!filtered.length) {
+    var empty = document.createElement('li');
+    empty.className = 'u-text-muted u-mono';
+    empty.style.fontSize = 'var(--font-size-sm)';
+    empty.textContent = 'No notes for selected tag.';
+    list.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(function(note) {
+    var li = document.createElement('li');
+    var link = document.createElement('a');
+    link.className = 'note-list-item';
+    link.href = '#' + note.slug;
+    link.setAttribute('data-slug', note.slug);
+
+    var dateEl = document.createElement('span');
+    dateEl.className = 'note-list-item__date';
+    dateEl.textContent = formatDate(note.date);
+
+    var titleEl = document.createElement('span');
+    titleEl.className = 'note-list-item__title';
+    titleEl.textContent = note.title;
+
+    link.appendChild(dateEl);
+    link.appendChild(titleEl);
+    li.appendChild(link);
+    list.appendChild(li);
+  });
 }
 
 /* ============================================================
@@ -218,6 +327,11 @@ function renderNote(slug, fm, body) {
 
   // Update page title
   document.title = (fm.title || slug) + ' — Umaru Biango';
+  updateSocialMeta({
+    title: document.title,
+    description: fm.excerpt || getTextExcerpt(body),
+    url: NOTES_PAGE_URL + '#' + slug,
+  });
 }
 
 /* ============================================================
@@ -335,7 +449,12 @@ function showList() {
   var noteView = document.getElementById('notes-note-view');
   if (listView) listView.classList.remove('is-hidden');
   if (noteView) noteView.classList.remove('is-visible');
-  document.title = 'Notes — Umaru Biango';
+  document.title = DEFAULT_NOTES_TITLE;
+  updateSocialMeta({
+    title: DEFAULT_NOTES_TITLE,
+    description: DEFAULT_NOTES_DESCRIPTION,
+    url: NOTES_PAGE_URL,
+  });
 }
 
 /* ============================================================
@@ -345,6 +464,59 @@ function formatDate(dateStr) {
   if (!dateStr) return '';
   var d = new Date(dateStr + 'T00:00:00');
   return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function getTagFromUrl() {
+  var params = new URLSearchParams(window.location.search);
+  return params.get('tag') || '';
+}
+
+function setTagInUrl(tag) {
+  var params = new URLSearchParams(window.location.search);
+  if (tag) {
+    params.set('tag', tag);
+  } else {
+    params.delete('tag');
+  }
+
+  var query = params.toString();
+  var next = window.location.pathname + (query ? '?' + query : '') + window.location.hash;
+  window.history.replaceState(null, '', next);
+}
+
+function updateSocialMeta(meta) {
+  setMeta('meta[property="og:title"]', meta.title);
+  setMeta('meta[property="og:description"]', meta.description);
+  setMeta('meta[property="og:url"]', meta.url);
+  setMeta('meta[name="twitter:title"]', meta.title);
+  setMeta('meta[name="twitter:description"]', meta.description);
+}
+
+function setMeta(selector, content) {
+  var el = document.querySelector(selector);
+  if (el) el.setAttribute('content', content);
+}
+
+function getTextExcerpt(markdown) {
+  if (!markdown) return DEFAULT_NOTES_DESCRIPTION;
+
+  var text = markdown
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/[#*_>`\[\]\(\)-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!text) return DEFAULT_NOTES_DESCRIPTION;
+
+  var limit = 160;
+  if (text.length <= limit) return text;
+
+  var slice = text.slice(0, limit);
+  var lastSpace = slice.lastIndexOf(' ');
+  var fragment = lastSpace > 0 ? slice.slice(0, lastSpace) : slice;
+  fragment = fragment.replace(/[\s\.,;:!?-]+$/g, '');
+
+  return (fragment || slice).trim() + '…';
 }
 
 function escapeHtml(str) {

@@ -23,7 +23,7 @@ Personal website of Umaru B Biango — hybrid hacker-lab + clean portfolio.
 
 ## Publishing a Note + Sending a Broadcast
 
-1. Write note in `notes/YYYY-MM-DD-slug.md`
+1. Write note in `notes/slug.md`
 2. Set frontmatter:
    ```yaml
    send: true        # shows newsletter signup form at bottom of note
@@ -31,20 +31,34 @@ Personal website of Umaru B Biango — hybrid hacker-lab + clean portfolio.
    sent: false       # set to true manually after broadcast fires
    ```
 3. Add entry to `data/notes-index.json`
-4. `git commit && git push` → Netlify deploys automatically
-5. Confirm note is live at the Netlify URL
-6. Run: `node scripts/broadcast.js`
-7. Confirm broadcast sent in ConvertKit dashboard
-8. Set `sent: true` in frontmatter → `git commit && git push`
+4. Run: `npm run generate:notes` (builds `/notes/<slug>/` static page with social meta tags)
+5. `git commit && git push` → Netlify deploys automatically
+6. Confirm note is live at `https://umarubiango.com/notes/<slug>/`
+7. Run: `node scripts/broadcast.js`
+8. Confirm broadcast sent in ConvertKit dashboard
+9. Set `sent: true` in frontmatter → `git commit && git push`
 
 ---
 
 ## Subscriber Sync
 
-**Method:** _To be decided before launch._
+**Method:** Option B (Automated) is implemented.
 
-- **Option A (Manual):** Export subscribers from Netlify Forms dashboard as CSV → import to ConvertKit
-- **Option B (Automated):** Netlify webhook → Netlify Function → ConvertKit API adds subscriber
+- Netlify Forms submission webhook → `/.netlify/functions/sync-subscriber`
+- Function subscribes the email to ConvertKit form via API
+
+### Option B Setup Steps
+
+1. Add environment variables in Netlify (Site settings → Environment variables):
+   - `CONVERTKIT_API_KEY`
+   - `CONVERTKIT_FORM_ID`
+   - `NETLIFY_SYNC_SECRET` (recommended)
+2. In Netlify, configure a Form submission webhook:
+   - Event: Newsletter form submission
+   - URL: `https://umarubiango.com/.netlify/functions/sync-subscriber`
+   - Header: `x-webhook-secret: <NETLIFY_SYNC_SECRET>`
+3. Deploy.
+4. Submit the newsletter form once and confirm subscriber appears in ConvertKit.
 
 ---
 
@@ -53,7 +67,9 @@ Personal website of Umaru B Biango — hybrid hacker-lab + clean portfolio.
 1. Create a `.env` file in the project root (never committed):
    ```
    CONVERTKIT_API_KEY=your_api_key_here
-   CONVERTKIT_BROADCAST_FROM_URL=https://umarubiango.dev
+   CONVERTKIT_BASE_URL=https://umarubiango.com
+   CONVERTKIT_FORM_ID=your_convertkit_form_id
+   NETLIFY_SYNC_SECRET=your_webhook_shared_secret
    ```
 2. Install dev dependencies: `npm install`
 3. Run: `npm run broadcast`
