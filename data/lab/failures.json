@@ -1,0 +1,35 @@
+[
+  {
+    "id": "real-time-dashboard-mistake",
+    "title": "Built a Real-Time Dashboard Nobody Used",
+    "category": "failures",
+    "status": "failed",
+    "date": "2025-11-15",
+    "stack": ["WebSockets", "Node.js", "Chart.js"],
+    "lesson": "Real-time is expensive and impressive. Daily CSV downloads are what operations teams actually use.",
+    "description": "Spent three weeks building a WebSocket-powered live transactions dashboard. Users ignored it. When asked, they said they review payments once a day in the morning. The daily export + email summary I built in two days became the primary touchpoint.",
+    "links": []
+  },
+  {
+    "id": "over-engineered-permissions",
+    "title": "Role Permission System That Slowed Everything Down",
+    "category": "failures",
+    "status": "failed",
+    "date": "2025-10-05",
+    "stack": ["Node.js", "PostgreSQL", "CASL"],
+    "lesson": "Fine-grained RBAC for a team of 3 is premature optimization disguised as architecture.",
+    "description": "Built a full resource-level permission system with roles, scopes, and custom policies. The first three customers had exactly one admin user each. No custom roles were ever created. The complexity added two weeks to every new feature.",
+    "links": []
+  },
+  {
+    "id": "monorepo-too-early",
+    "title": "Migrated to Monorepo Six Months Too Early",
+    "category": "failures",
+    "status": "failed",
+    "date": "2025-09-01",
+    "stack": ["Turborepo", "Node.js"],
+    "lesson": "Monorepos solve sharing problems. If you haven't hit sharing problems, you don't have a monorepo problem.",
+    "description": "Moved to a Turborepo monorepo before there was a second service to share code with. Developer experience got worse, not better. CI pipelines doubled in complexity. Reverted four weeks later.",
+    "links": []
+  }
+]

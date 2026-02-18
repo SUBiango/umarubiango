@@ -1,0 +1,2 @@
+# Redirect www to apex
+https://www.umarubiango.com/* https://umarubiango.com/:splat 301!

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Notes and long-form writing from Umaru Biango on building in emerging markets.">
+
+  <meta property="og:title" content="Notes — Umaru Biango">
+  <meta property="og:description" content="Long-form notes on building in emerging markets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://umarubiango.com/notes.html">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/img/favicons/site.webmanifest">
+
+  <!-- Prism.js syntax highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Notes — Umaru Biango</title>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Navigation -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="page-wrapper">
+      <a href="index.html" class="nav-logo">ub://</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">home</a></li>
+        <li><a href="lab.html">lab</a></li>
+        <li><a href="notes.html" aria-current="page">notes</a></li>
+        <li><a href="how-i-think.html">how i think</a></li>
+        <li><a href="now.html">now</a></li>
+        <li><a href="contact.html">contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main id="main" tabindex="-1">
+    <div class="page-wrapper">
+
+      <!-- Notes list view -->
+      <div id="notes-list-view" class="note-list-view">
+        <header class="page-header">
+          <h1>notes</h1>
+          <p class="page-header__sub">// long-form writing, when it's earned</p>
+        </header>
+
+        <div class="terminal-block" style="margin-bottom: var(--space-6);" role="region" aria-label="Notes directory">
+          <span class="terminal-line">
+            <span class="t-prompt" aria-hidden="true">&gt;</span>
+            <span class="t-cmd">ls notes/</span>
+          </span>
+        </div>
+
+        <nav aria-label="Notes list">
+          <ul id="notes-list" class="notes-list" aria-live="polite">
+            <li><span class="state-loading u-mono">loading...</span></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Full note view (hidden until note is selected) -->
+      <div id="notes-note-view" class="note-view" aria-live="polite">
+        <button id="notes-back-btn" class="note-view__back" aria-label="Back to notes list">
+          notes
+        </button>
+
+        <article id="notes-article">
+          <!-- Populated by notes.js -->
+        </article>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Netlify build-time form detection fallback -->
+  <form name="newsletter" method="POST" data-netlify="true" hidden>
+    <input type="hidden" name="form-name" value="newsletter">
+    <input type="hidden" name="form-type" value="newsletter">
+    <input type="hidden" name="note_slug" value="">
+    <input type="email" name="email">
+  </form>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+      <p>&copy; 2026 Umaru S. Biango</p>
+    </div>
+  </footer>
+
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="assets/js/terminal.js"></script>
+  <script src="assets/js/notes.js"></script>
+
+</body>
+</html>

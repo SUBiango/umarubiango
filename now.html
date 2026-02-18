@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="What Umaru Biango is doing right now.">
+
+  <meta property="og:title" content="Now — Umaru Biango">
+  <meta property="og:description" content="What I'm currently building, learning, and ignoring.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://umarubiango.com/now.html">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/img/favicons/site.webmanifest">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Now — Umaru Biango</title>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Navigation -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="page-wrapper">
+      <a href="index.html" class="nav-logo">ub://</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">home</a></li>
+        <li><a href="lab.html">lab</a></li>
+        <li><a href="notes.html">notes</a></li>
+        <li><a href="how-i-think.html">how i think</a></li>
+        <li><a href="now.html" aria-current="page">now</a></li>
+        <li><a href="contact.html">contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main id="main" tabindex="-1">
+    <div class="page-wrapper">
+
+      <header class="page-header">
+        <h1>now</h1>
+        <p class="page-header__sub">// updated weekly, every monday</p>
+      </header>
+
+      <section class="now-section" aria-labelledby="now-status-heading">
+        <h2 id="now-status-heading" class="u-sr-only">Current status</h2>
+        <div
+          id="now-terminal"
+          class="terminal-block"
+          role="region"
+          aria-label="Current status terminal output"
+          aria-live="polite"
+        >
+          <span class="state-loading u-mono">loading...</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+      <p>&copy; 2026 Umaru Biango</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/terminal.js"></script>
+  <script src="assets/js/now.js"></script>
+
+</body>
+</html>

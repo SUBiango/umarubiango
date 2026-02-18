@@ -1,0 +1,35 @@
+[
+  {
+    "id": "payment-webhook-retry",
+    "title": "Exponential Backoff for Payment Webhooks",
+    "category": "experiments",
+    "status": "active",
+    "date": "2026-02-10",
+    "stack": ["Node.js", "Redis", "Bull Queue"],
+    "lesson": "Retry logic is not optional in emerging markets — networks fail constantly.",
+    "description": "Built a webhook retry system using Bull Queue with exponential backoff. The key insight was that fixed-interval retries hammer already-struggling endpoints. Exponential backoff with jitter spreads load and improves delivery rates.\n\n```javascript\nconst retryOptions = {\n  attempts: 5,\n  backoff: {\n    type: 'exponential',\n    delay: 1000,\n  },\n};\n```",
+    "links": []
+  },
+  {
+    "id": "ussd-session-state",
+    "title": "USSD Session State Without a Database",
+    "category": "experiments",
+    "status": "archived",
+    "date": "2026-01-20",
+    "stack": ["Node.js", "Redis"],
+    "lesson": "Redis TTL is the perfect model for USSD sessions — 90 seconds and done.",
+    "description": "Explored managing USSD session state purely in Redis with a 90-second TTL. No persistent storage. Session data lives only as long as the session, which matches USSD's stateless-by-nature model perfectly.",
+    "links": []
+  },
+  {
+    "id": "otp-flood-prevention",
+    "title": "OTP Flood Prevention on SMS-Limited Budget",
+    "category": "experiments",
+    "status": "active",
+    "date": "2026-02-01",
+    "stack": ["Node.js", "Redis", "Twilio"],
+    "lesson": "Rate limiting OTP sends per phone number saved ~40% on SMS costs immediately.",
+    "description": "Implemented tiered rate limiting: 3 OTPs per phone per 10 minutes, 10 per hour. Combined with a CAPTCHA-less proof-of-work on the frontend to reduce bot-driven floods.",
+    "links": []
+  }
+]

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get in touch with Umaru Biango.">
+
+  <meta property="og:title" content="Contact — Umaru Biango">
+  <meta property="og:description" content="Get in touch.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://umarubiango.com/contact.html">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/img/favicons/site.webmanifest">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+  <title>Contact — Umaru Biango</title>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Navigation -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="page-wrapper">
+      <a href="index.html" class="nav-logo">ub://</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="index.html">home</a></li>
+        <li><a href="lab.html">lab</a></li>
+        <li><a href="notes.html">notes</a></li>
+        <li><a href="how-i-think.html">how i think</a></li>
+        <li><a href="now.html">now</a></li>
+        <li><a href="contact.html" aria-current="page">contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main id="main" tabindex="-1">
+    <div class="page-wrapper">
+
+      <header class="page-header">
+        <h1>contact</h1>
+        <p class="page-header__sub">// send a message</p>
+      </header>
+
+      <div class="terminal-block" style="margin-bottom: var(--space-8);" role="region" aria-label="Contact prompt">
+        <span class="terminal-line">
+          <span class="t-prompt" aria-hidden="true">&gt;</span>
+          <span class="t-cmd">send_message</span>
+        </span>
+        <span class="t-out">I read everything. I reply when it's worth it to both of us.</span>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrap" id="contact-form-wrap">
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          id="contact-form"
+          novalidate
+        >
+          <!-- Honeypot -->
+          <p class="u-sr-only" aria-hidden="true">
+            <label>Don't fill this out: <input name="bot-field"></label>
+          </p>
+          <input type="hidden" name="form-name" value="contact">
+
+          <div class="form-group">
+            <label for="name">name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="your name"
+              required
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="email">email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="message">message</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="what's on your mind"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">send →</button>
+        </form>
+
+        <!-- Success state (hidden until form submits) -->
+        <div id="contact-success" aria-live="polite" style="display: none;">
+          <div class="terminal-block" role="region" aria-label="Message sent confirmation">
+            <span class="terminal-line">
+              <span class="t-prompt" aria-hidden="true">&gt;</span>
+              <span class="t-cmd">message_sent</span>
+            </span>
+            <span class="t-out">got it. i'll be in touch.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+      <p>&copy; 2026 Umaru Biango</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/terminal.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initNav();
+
+      var form = document.getElementById('contact-form');
+      var success = document.getElementById('contact-success');
+
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var data = new FormData(form);
+
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data).toString(),
+        })
+          .then(function(response) {
+            if (response.ok) {
+              form.style.display = 'none';
+              success.style.display = 'block';
+              success.focus();
+            } else {
+              alert('Something went wrong. Please try again or email hello@umarubiango.com directly.');
+            }
+          })
+          .catch(function() {
+            alert('Could not send. Please email hello@umarubiango.com directly.');
+          });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,6 +1,13 @@
 {
-  "dependencies": {
-    "animate.css": "^4.1.1",
-    "aos": "^2.3.4"
+  "name": "umarubiango-dev",
+  "version": "1.0.0",
+  "description": "Personal website of Umaru Biango",
+  "private": true,
+  "scripts": {
+    "broadcast": "node scripts/broadcast.js"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
   }
 }
+
