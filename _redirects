@@ -1,2 +1,2 @@
-# Redirect www to apex
-https://www.umarubiango.com/* https://umarubiango.com/:splat 301!
+# Domain-level canonical redirects are managed in Netlify site settings
+# to avoid conflicts/loops with primary domain configuration.
