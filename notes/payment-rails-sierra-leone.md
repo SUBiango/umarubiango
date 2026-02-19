@@ -1,15 +1,17 @@
 ---
-title: "Building Payment Rails for Lagos"
+title: "Building Payment Rails for Sierra Leone"
 date: 2026-02-18
 excerpt: "Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa."
 tags: [payments, emerging-markets, compliance, fintech]
-slug: "payment-rails-lagos"
+slug: "payment-rails-sierra-leone"
+featured_image: "/assets/images/notes/building-payment-rails-sierra-leone.webp"
+featured_image_alt: "Illustration for Building Payment Rails for Sierra Leone"
 send: true
 broadcast: true
 sent: false
 ---
 
-# Building Payment Rails for Lagos
+# Building Payment Rails for Sierra Leone
 
 Six months ago I started building the payments layer for Korporty. I assumed it would take three weeks. It took four months to get to reliable.
 
@@ -19,7 +21,7 @@ Here's what I learned.
 
 Every payment integration I'd seen before was built for the assumption that the network is mostly up, the PSP is mostly responsive, and failures are edge cases you handle gracefully.
 
-In Lagos, failures are the default state. Success is the edge case you need to engineer for.
+In Sierra Leone, failures are the default state. Success is the edge case you need to engineer for.
 
 The first week, our webhook delivery rate was 34%. Not because our servers were down — because the mobile networks were congested between 6pm and 9pm every day, and asynchronous callbacks were being dropped silently.
 

@@ -1,7 +1,13 @@
 [
   {
-    "slug": "payment-rails-lagos",
-    "title": "Building Payment Rails for Lagos",
+    "slug": "why-no-one-will-adopt-your-tech-product-in-sierra-leone",
+    "title": "Why No One Will Adopt Your Tech Product in Sierra Leone",
+    "date": "2026-02-19",
+    "excerpt": "Technology is only one slice of the adoption pie in Sierra Leone."
+  },
+  {
+    "slug": "payment-rails-sierra-leone",
+    "title": "Building Payment Rails for Sierra Leone",
     "date": "2026-02-18",
     "excerpt": "Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa."
   }

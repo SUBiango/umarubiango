@@ -4,18 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
-  <meta property="og:title" content="Building Payment Rails for Lagos — Umaru Biango">
+  <meta property="og:title" content="Building Payment Rails for Sierra Leone — Umaru Biango">
   <meta property="og:description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://umarubiango.com/notes/payment-rails-lagos/">
+  <meta property="og:url" content="https://umarubiango.com/notes/payment-rails-sierra-leone/">
   <meta property="og:site_name" content="Umaru Biango">
+  <meta property="og:image" content="https://umarubiango.com/assets/images/notes/building-payment-rails-sierra-leone.webp">
+  <meta property="og:image:alt" content="Illustration for Building Payment Rails for Sierra Leone">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Building Payment Rails for Lagos — Umaru Biango">
+  <meta name="twitter:title" content="Building Payment Rails for Sierra Leone — Umaru Biango">
   <meta name="twitter:description" content="Six months of fintech compliance, PSP failures, and the infrastructure assumptions that will get you killed in West Africa.">
-  <link rel="canonical" href="https://umarubiango.com/notes/payment-rails-lagos/">
+  <meta name="twitter:image" content="https://umarubiango.com/assets/images/notes/building-payment-rails-sierra-leone.webp">
+  <link rel="canonical" href="https://umarubiango.com/notes/payment-rails-sierra-leone/">
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
-  <title>Building Payment Rails for Lagos — Umaru Biango</title>
+  <title>Building Payment Rails for Sierra Leone — Umaru Biango</title>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to content</a>
@@ -40,17 +43,18 @@
       <a class="note-view__back" aria-label="Back to notes list" href="../../notes.html">notes</a>
       <article>
         <header class="note-view__header">
-          <h1 class="note-view__title">Building Payment Rails for Lagos</h1>
+          <h1 class="note-view__title">Building Payment Rails for Sierra Leone</h1>
           <div class="note-view__meta">
             <span>2026-02-18</span>
             <span class="note-view__tags"><span>payments</span><span>emerging-markets</span><span>compliance</span><span>fintech</span></span>
           </div>
         </header>
+        <figure class="note-featured-image"><img src="/assets/images/notes/building-payment-rails-sierra-leone.webp" alt="Illustration for Building Payment Rails for Sierra Leone" width="1200" height="630" loading="lazy" decoding="async"></figure>
         <div class="note-body"><p>Six months ago I started building the payments layer for Korporty. I assumed it would take three weeks. It took four months to get to reliable.</p>
 <p>Here&#39;s what I learned.</p>
 <h2>The first assumption that broke</h2>
 <p>Every payment integration I&#39;d seen before was built for the assumption that the network is mostly up, the PSP is mostly responsive, and failures are edge cases you handle gracefully.</p>
-<p>In Lagos, failures are the default state. Success is the edge case you need to engineer for.</p>
+<p>In Sierra Leone, failures are the default state. Success is the edge case you need to engineer for.</p>
 <p>The first week, our webhook delivery rate was 34%. Not because our servers were down — because the mobile networks were congested between 6pm and 9pm every day, and asynchronous callbacks were being dropped silently.</p>
 <h2>What actually works</h2>
 <p><strong>Retry with exponential backoff and jitter.</strong></p>
@@ -101,6 +105,25 @@
 <hr>
 <p>Korporty is in private beta. If you&#39;re building payments infrastructure in West Africa and want to compare notes, reach out.</p>
 </div>
+        <div class="newsletter-form">
+          <div class="terminal-block" role="region" aria-label="Newsletter signup">
+            <span class="terminal-line"><span class="t-prompt" aria-hidden="true">&gt;</span> <span class="t-cmd">want_more</span></span>
+            <span class="t-out">I send long-form reflections when they're worth reading.</span>
+          </div>
+          <form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>
+            <input type="hidden" name="form-name" value="newsletter">
+            <input type="hidden" name="form-type" value="newsletter">
+            <input type="hidden" name="note_slug" value="payment-rails-sierra-leone">
+            <div class="form-row">
+              <label for="newsletter-email" class="u-sr-only">Email address</label>
+              <input type="email" id="newsletter-email" name="email" placeholder="enter_email" required autocomplete="email">
+              <button type="submit" class="form-submit-inline">subscribe</button>
+            </div>
+          </form>
+        </div>
+        <nav class="note-post-nav" aria-label="Post navigation">
+          <a class="note-post-nav__next" href="../why-no-one-will-adopt-your-tech-product-in-sierra-leone/"><span class="note-post-nav__label">next post →</span><span class="note-post-nav__title">Why No One Will Adopt Your Tech Product in Sierra Leone</span></a>
+        </nav>
       </article>
     </div>
   </main>

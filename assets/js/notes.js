@@ -295,6 +295,20 @@ function renderNote(slug, fm, body) {
   header.appendChild(meta);
   article.appendChild(header);
 
+  // Optional featured image (from note frontmatter)
+  if (fm.featured_image) {
+    var figure = document.createElement('figure');
+    figure.className = 'note-featured-image';
+
+    var image = document.createElement('img');
+    image.src = fm.featured_image;
+    image.alt = fm.featured_image_alt || (fm.title || slug);
+    image.decoding = 'async';
+
+    figure.appendChild(image);
+    article.appendChild(figure);
+  }
+
   // Markdown body
   var bodyEl = document.createElement('div');
   bodyEl.className = 'note-body';
@@ -317,11 +331,14 @@ function renderNote(slug, fm, body) {
 
   article.appendChild(bodyEl);
 
+  var postNav = renderPostNav(slug);
+  if (postNav) article.appendChild(postNav);
+
   // Syntax highlighting
   if (window.Prism) Prism.highlightAllUnder(bodyEl);
 
-  // Newsletter form injection
-  if (fm.send === true) {
+  // Newsletter form injection (shown by default unless explicitly disabled)
+  if (fm.send !== false) {
     article.appendChild(renderNewsletterForm(slug));
   }
 
@@ -332,6 +349,41 @@ function renderNote(slug, fm, body) {
     description: fm.excerpt || getTextExcerpt(body),
     url: NOTES_PAGE_URL + '#' + slug,
   });
+}
+
+function renderPostNav(currentSlug) {
+  var index = NOTES.findIndex(function(note) { return note.slug === currentSlug; });
+  if (index === -1) return null;
+
+  var newer = index > 0 ? NOTES[index - 1] : null;
+  var older = index < NOTES.length - 1 ? NOTES[index + 1] : null;
+  if (!older && !newer) return null;
+
+  var nav = document.createElement('nav');
+  nav.className = 'note-post-nav';
+  nav.setAttribute('aria-label', 'Post navigation');
+
+  if (older) {
+    var prev = document.createElement('a');
+    prev.className = 'note-post-nav__prev';
+    prev.href = '#' + encodeURIComponent(older.slug);
+    prev.innerHTML =
+      '<span class="note-post-nav__label">← previous post</span>' +
+      '<span class="note-post-nav__title">' + escapeHtml(older.title || older.slug) + '</span>';
+    nav.appendChild(prev);
+  }
+
+  if (newer) {
+    var next = document.createElement('a');
+    next.className = 'note-post-nav__next';
+    next.href = '#' + encodeURIComponent(newer.slug);
+    next.innerHTML =
+      '<span class="note-post-nav__label">next post →</span>' +
+      '<span class="note-post-nav__title">' + escapeHtml(newer.title || newer.slug) + '</span>';
+    nav.appendChild(next);
+  }
+
+  return nav;
 }
 
 /* ============================================================

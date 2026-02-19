@@ -13,22 +13,72 @@ var SITE_URL = 'https://umarubiango.com';
 var markdownFiles = fs.readdirSync(NOTES_DIR)
   .filter(function(name) { return name.endsWith('.md'); });
 
-markdownFiles.forEach(function(filename) {
+var noteEntries = markdownFiles.map(function(filename) {
   var sourcePath = path.join(NOTES_DIR, filename);
   var raw = fs.readFileSync(sourcePath, 'utf8');
   var parsed = matter(raw);
   var fm = parsed.data || {};
-  var slug = fm.slug || filename.replace(/\.md$/, '');
-  var title = fm.title || slug;
+  return {
+    filename: filename,
+    raw: raw,
+    parsed: parsed,
+    fm: fm,
+    slug: fm.slug || filename.replace(/\.md$/, ''),
+    title: fm.title || filename.replace(/\.md$/, ''),
+    sortTs: toSortTimestamp(fm.date),
+  };
+});
+
+var sortedNotes = noteEntries.slice().sort(function(a, b) {
+  return b.sortTs - a.sortTs;
+});
+
+noteEntries.forEach(function(entry) {
+  var parsed = entry.parsed;
+  var fm = entry.fm;
+  var slug = entry.slug;
+  var title = entry.title;
   var excerpt = fm.excerpt || toExcerpt(parsed.content);
   var date = formatDate(fm.date);
   var tags = Array.isArray(fm.tags) ? fm.tags : [];
+  var featuredImage = typeof fm.featured_image === 'string' ? fm.featured_image.trim() : '';
+  var featuredImageAlt = fm.featured_image_alt || title;
+  var featuredImageWidth = fm.featured_image_width != null ? fm.featured_image_width : fm.featuredImageWidth;
+  var featuredImageHeight = fm.featured_image_height != null ? fm.featured_image_height : fm.featuredImageHeight;
+  var featuredImageUrl = featuredImage ? toAbsoluteUrl(featuredImage) : '';
+  var showNewsletter = fm.send !== false;
+  var postNavHtml = buildPostNavHtml(sortedNotes, slug);
 
   var htmlBody = marked.parse(parsed.content);
   htmlBody = htmlBody.replace(/^\s*<h1\b[^>]*>[\s\S]*?<\/h1>\s*/i, '');
   var tagsHtml = tags.map(function(tag) {
     return '<span>' + escapeHtml(tag) + '</span>';
   }).join('');
+  var featuredImageWidthAttr = featuredImageWidth ? ' width="' + escapeHtml(featuredImageWidth) + '"' : '';
+  var featuredImageHeightAttr = featuredImageHeight ? ' height="' + escapeHtml(featuredImageHeight) + '"' : '';
+  var featuredImageHtml = featuredImage
+    ? '        <figure class="note-featured-image"><img src="' + escapeHtml(featuredImage) + '" alt="' + escapeHtml(featuredImageAlt) + '"' + featuredImageWidthAttr + featuredImageHeightAttr + ' loading="lazy" decoding="async"></figure>\n'
+    : '';
+  var newsletterHtml = showNewsletter
+    ? (
+      '        <div class="newsletter-form">\n' +
+      '          <div class="terminal-block" role="region" aria-label="Newsletter signup">\n' +
+      '            <span class="terminal-line"><span class="t-prompt" aria-hidden="true">&gt;</span> <span class="t-cmd">want_more</span></span>\n' +
+      '            <span class="t-out">I send long-form reflections when they\'re worth reading.</span>\n' +
+      '          </div>\n' +
+      '          <form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>\n' +
+      '            <input type="hidden" name="form-name" value="newsletter">\n' +
+      '            <input type="hidden" name="form-type" value="newsletter">\n' +
+      '            <input type="hidden" name="note_slug" value="' + escapeHtml(slug) + '">\n' +
+      '            <div class="form-row">\n' +
+      '              <label for="newsletter-email" class="u-sr-only">Email address</label>\n' +
+      '              <input type="email" id="newsletter-email" name="email" placeholder="enter_email" required autocomplete="email">\n' +
+      '              <button type="submit" class="form-submit-inline">subscribe</button>\n' +
+      '            </div>\n' +
+      '          </form>\n' +
+      '        </div>\n'
+    )
+    : '';
 
   var pageHtml = '<!DOCTYPE html>\n' +
     '<html lang="en">\n' +
@@ -41,9 +91,12 @@ markdownFiles.forEach(function(filename) {
     '  <meta property="og:type" content="article">\n' +
     '  <meta property="og:url" content="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
     '  <meta property="og:site_name" content="Umaru Biango">\n' +
-    '  <meta name="twitter:card" content="summary">\n' +
+    (featuredImageUrl ? ('  <meta property="og:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
+    (featuredImageUrl ? ('  <meta property="og:image:alt" content="' + escapeHtml(featuredImageAlt) + '">\n') : '') +
+    '  <meta name="twitter:card" content="' + (featuredImageUrl ? 'summary_large_image' : 'summary') + '">\n' +
     '  <meta name="twitter:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
+    (featuredImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
     '  <link rel="canonical" href="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
     '  <link rel="stylesheet" href="../../assets/css/main.css">\n' +
     '  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">\n' +
@@ -78,7 +131,10 @@ markdownFiles.forEach(function(filename) {
     (tagsHtml ? ('            <span class="note-view__tags">' + tagsHtml + '</span>\n') : '') +
     '          </div>\n' +
     '        </header>\n' +
+    featuredImageHtml +
     '        <div class="note-body">' + htmlBody + '</div>\n' +
+    newsletterHtml +
+    postNavHtml +
     '      </article>\n' +
     '    </div>\n' +
     '  </main>\n' +
@@ -134,4 +190,35 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function toAbsoluteUrl(url) {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  return SITE_URL + (url.charAt(0) === '/' ? url : '/' + url);
+}
+
+function toSortTimestamp(value) {
+  if (!value) return 0;
+  var d = value instanceof Date ? value : new Date(String(value));
+  return isNaN(d.getTime()) ? 0 : d.getTime();
+}
+
+function buildPostNavHtml(sorted, currentSlug) {
+  var index = sorted.findIndex(function(note) { return note.slug === currentSlug; });
+  if (index === -1) return '';
+
+  var newer = index > 0 ? sorted[index - 1] : null;
+  var older = index < sorted.length - 1 ? sorted[index + 1] : null;
+  if (!newer && !older) return '';
+
+  var html = '        <nav class="note-post-nav" aria-label="Post navigation">\n';
+  if (older) {
+    html += '          <a class="note-post-nav__prev" href="../' + encodeURIComponent(older.slug) + '/"><span class="note-post-nav__label">← previous post</span><span class="note-post-nav__title">' + escapeHtml(older.title || older.slug) + '</span></a>\n';
+  }
+  if (newer) {
+    html += '          <a class="note-post-nav__next" href="../' + encodeURIComponent(newer.slug) + '/"><span class="note-post-nav__label">next post →</span><span class="note-post-nav__title">' + escapeHtml(newer.title || newer.slug) + '</span></a>\n';
+  }
+  html += '        </nav>\n';
+  return html;
 }
