@@ -11,7 +11,7 @@ var NOTES = [];
 var SELECTED_TAG = '';
 var NOTES_PAGE_URL = new URL('/notes.html', window.location.origin).toString();
 var DEFAULT_NOTES_TITLE = 'Notes — Umaru Biango';
-var DEFAULT_NOTES_DESCRIPTION = 'Long-form notes on building in emerging markets.';
+var DEFAULT_NOTES_DESCRIPTION = 'Field notes from building in Sierra Leone — what breaks, what survives, what scales.';
 var TAG_ENRICH_CONCURRENCY = 4;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -400,7 +400,7 @@ function renderNewsletterForm(slug) {
         '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
         ' <span class="t-cmd">want_more</span>' +
       '</span>' +
-      '<span class="t-out">I send long-form reflections when they\'re worth reading.</span>' +
+      '<span class="t-out">No growth hacks. Just hard-won lessons worth stealing.</span>' +
     '</div>' +
     '<form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>' +
       '<input type="hidden" name="form-name" value="newsletter">' +

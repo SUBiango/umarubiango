@@ -64,7 +64,7 @@ noteEntries.forEach(function(entry) {
       '        <div class="newsletter-form">\n' +
       '          <div class="terminal-block" role="region" aria-label="Newsletter signup">\n' +
       '            <span class="terminal-line"><span class="t-prompt" aria-hidden="true">&gt;</span> <span class="t-cmd">want_more</span></span>\n' +
-      '            <span class="t-out">I send long-form reflections when they\'re worth reading.</span>\n' +
+      '            <span class="t-out">No growth hacks. Just hard-won lessons worth stealing.</span>\n' +
       '          </div>\n' +
       '          <form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>\n' +
       '            <input type="hidden" name="form-name" value="newsletter">\n' +
@@ -157,7 +157,7 @@ noteEntries.forEach(function(entry) {
     '  </footer>\n' +
     '  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>\n' +
     '  <script src="../../assets/js/terminal.js"></script>\n' +
-    '  <script>document.addEventListener("DOMContentLoaded",function(){initNav();if(window.Prism){Prism.highlightAll();}});</script>\n' +
+    '  <script>document.addEventListener("DOMContentLoaded",function(){if(typeof initNav==="function"){initNav();}if(window.Prism){Prism.highlightAll();}});</script>\n' +
     '</body>\n' +
     '</html>\n';
 

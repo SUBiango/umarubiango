@@ -31,7 +31,7 @@ function runHero() {
     },
     {
       cmd: 'thesis',
-      output: 'I design systems where constraints are real.',
+      output: 'Practical software products for hard markets, built in public',
     },
   ];
 
