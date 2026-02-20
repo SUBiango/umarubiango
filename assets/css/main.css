@@ -44,7 +44,7 @@
   --color-surface:      #161d26;
   --color-border:       #2a3442;
   --color-text:         #c5c8c6;
-  --color-text-muted:   #6b7280;
+  --color-text-muted:   #8a919e;
   --color-command:      #ffffff;
   --color-prompt:       rgba(0, 255, 65, 0.7);
   --color-accent-green: #00ff41;
@@ -80,6 +80,13 @@
   --space-12: 3rem;      /* 48px */
   --space-16: 4rem;      /* 64px */
   --space-20: 5rem;      /* 80px */
+
+  /* Terminal spacing */
+  /* 
+     1ch (>) + 1ch (space) + 0.5rem (margin-right) 
+     Approx 2ch + 8px
+  */
+  --terminal-prompt-width: calc(2ch + var(--space-2));
 
   /* Layout */
   --max-width: 740px;
@@ -126,10 +133,22 @@ a {
   color: var(--color-accent-blue);
   text-decoration: none;
   transition: color var(--transition-fast);
+  position: relative;
 }
 
 a:hover {
   color: var(--color-command);
+}
+
+a:not(.nav-logo):not(.nav-links a):not(.btn):not(.preview-item--link):not(.note-list-item):hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
 }
 
 a:focus-visible {
@@ -382,6 +401,10 @@ section {
     padding: var(--space-3) var(--space-6);
     font-size: var(--font-size-sm);
   }
+
+  .nav-links a::after {
+    display: none !important;
+  }
 }
 
 /* ============================================================
@@ -401,6 +424,8 @@ section {
 .terminal-line {
   display: block;
   margin-bottom: var(--space-4);
+  position: relative;
+  padding-left: var(--terminal-prompt-width);
 }
 
 .terminal-line:last-child {
@@ -411,7 +436,14 @@ section {
 .t-prompt {
   color: var(--color-prompt);
   user-select: none;
-  margin-right: var(--space-2);
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* Reset previous styles that might conflict */
+  margin-right: 0;
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
 }
 
 /* Command text (after >) */
@@ -423,7 +455,7 @@ section {
 .t-out {
   color: var(--color-text);
   display: block;
-  padding-left: 0;
+  padding-left: var(--terminal-prompt-width);
 }
 
 /* Blank spacer line between blocks */
@@ -562,6 +594,29 @@ section {
   resize: vertical;
   line-height: var(--line-height-base);
 }
+
+.form-group input.is-invalid,
+.form-group textarea.is-invalid {
+  border-color: var(--color-error);
+}
+
+.form-group input.is-valid,
+.form-group textarea.is-valid {
+  border-color: var(--color-accent-green);
+}
+
+.form-error {
+  display: none;
+  font-family: var(--font-terminal);
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  margin-top: var(--space-2);
+}
+
+.form-error.is-visible {
+  display: block;
+}
+
 
 .form-submit {
   font-family: var(--font-terminal);
@@ -1171,6 +1226,20 @@ section {
 }
 
 .state-error { color: var(--color-error); }
+
+.state-loading::after {
+  content: '...';
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: left;
+  overflow: hidden;
+  width: 0;
+  animation: loading-dots 1.5s infinite steps(4, end);
+}
+
+@keyframes loading-dots {
+  to { width: 4ch; }
+}
 
 /* ============================================================
    REDUCED MOTION

@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="If you're building for hard markets, reach out.">
+  <meta name="description" content="Get in touch with Umaru Biango for partnerships, product consultations, and collaborations on emerging markets technology. Building for hard markets.">
 
   <meta property="og:title" content="Contact — Umaru Biango">
   <meta property="og:description" content="If you're building for hard markets, reach out.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://umarubiango.dev/contact.html">
+  <meta property="og:url" content="https://umarubiango.com/contact.html">
+  <meta property="og:image" content="https://umarubiango.com/assets/images/og-image.png">
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/img/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/img/favicons/site.webmanifest">
+  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
+  <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
 
   <link rel="stylesheet" href="assets/css/main.css">
   <title>Contact — Umaru Biango</title>
@@ -49,7 +51,7 @@
 
       <header class="page-header">
         <h1>contact</h1>
-        <p class="page-header__sub">// if you're building for hard markets, i'll reply</p>
+        <p class="page-header__sub">// I read every message. I reply when it's worth my time and yours</p>
       </header>
 
       <div class="terminal-block" style="margin-bottom: var(--space-8);" role="region" aria-label="Contact prompt">
@@ -85,6 +87,7 @@
               required
               autocomplete="name"
             >
+            <div class="form-error" id="name-error">Please enter your name</div>
           </div>
 
           <div class="form-group">
@@ -97,6 +100,7 @@
               required
               autocomplete="email"
             >
+            <div class="form-error" id="email-error">Please enter a valid email address</div>
           </div>
 
           <div class="form-group">
@@ -107,6 +111,7 @@
               placeholder="what's on your mind"
               required
             ></textarea>
+            <div class="form-error" id="message-error">Please enter a message</div>
           </div>
 
           <button type="submit" class="form-submit">send →</button>
@@ -142,11 +147,64 @@
 
       var form = document.getElementById('contact-form');
       var success = document.getElementById('contact-success');
+      var nameInput = document.getElementById('name');
+      var emailInput = document.getElementById('email');
+      var messageInput = document.getElementById('message');
 
       if (!form) return;
 
+      // Validation helper
+      function validateField(field) {
+        var errorEl = document.getElementById(field.id + '-error');
+        var isValid = true;
+
+        if (field.type === 'email') {
+          var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          isValid = field.value.trim() !== '' && emailPattern.test(field.value);
+        } else {
+          isValid = field.value.trim() !== '';
+        }
+
+        if (isValid) {
+          field.classList.remove('is-invalid');
+          field.classList.add('is-valid');
+          if (errorEl) errorEl.classList.remove('is-visible');
+        } else {
+          field.classList.remove('is-valid');
+          field.classList.add('is-invalid');
+          if (errorEl) errorEl.classList.add('is-visible');
+        }
+
+        return isValid;
+      }
+
+      // Real-time validation on blur
+      [nameInput, emailInput, messageInput].forEach(function(field) {
+        field.addEventListener('blur', function() {
+          validateField(field);
+        });
+
+        // Remove error on input
+        field.addEventListener('input', function() {
+          if (field.classList.contains('is-invalid')) {
+            field.classList.remove('is-invalid');
+            var errorEl = document.getElementById(field.id + '-error');
+            if (errorEl) errorEl.classList.remove('is-visible');
+          }
+        });
+      });
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
+
+        // Validate all fields
+        var nameValid = validateField(nameInput);
+        var emailValid = validateField(emailInput);
+        var messageValid = validateField(messageInput);
+
+        if (!nameValid || !emailValid || !messageValid) {
+          return;
+        }
 
         var data = new FormData(form);
 
@@ -161,11 +219,23 @@
               success.style.display = 'block';
               success.focus();
             } else {
-              alert('Something went wrong. Please try again or email hello@umarubiango.com directly.');
+              // Show error in terminal block style
+              var errorMsg = document.createElement('div');
+              errorMsg.className = 'terminal-block';
+              errorMsg.style.marginTop = 'var(--space-4)';
+              errorMsg.innerHTML = '<span class="t-out" style="color: var(--color-error);">Something went wrong. Please try again or email hello@umarubiango.com directly.</span>';
+              form.appendChild(errorMsg);
+              setTimeout(function() { errorMsg.remove(); }, 5000);
             }
           })
           .catch(function() {
-            alert('Could not send. Please email hello@umarubiango.com directly.');
+            // Show error in terminal block style
+            var errorMsg = document.createElement('div');
+            errorMsg.className = 'terminal-block';
+            errorMsg.style.marginTop = 'var(--space-4)';
+            errorMsg.innerHTML = '<span class="t-out" style="color: var(--color-error);">Could not send. Please email hello@umarubiango.com directly.</span>';
+            form.appendChild(errorMsg);
+            setTimeout(function() { errorMsg.remove(); }, 5000);
           });
       });
     });

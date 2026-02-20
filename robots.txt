@@ -1,0 +1,12 @@
+# robots.txt for umarubiango.com
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://umarubiango.com/sitemap.xml
+
+# Disallow private directories
+Disallow: /netlify/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /.env

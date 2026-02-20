@@ -496,8 +496,26 @@ function showNoteView() {
   // Wire back button
   var backBtn = document.getElementById('notes-back-btn');
   if (backBtn) {
-    backBtn.onclick = function() {
-      window.location.hash = '';
+    backBtn.onclick = function(e) {
+      e.preventDefault();
+      
+      // Use browser history if we likely came from within the site
+      var cameFromSite = false;
+      try {
+        if (document.referrer) {
+          var refUrl = new URL(document.referrer);
+          cameFromSite = refUrl.hostname === window.location.hostname;
+        }
+      } catch (err) {
+        // Invalid referrer URL or blocked
+      }
+
+      if (window.history.length > 1 && cameFromSite) {
+        window.history.back();
+      } else {
+        // Force return to list view (clear hash triggers handleHash -> showList)
+        window.location.hash = '';
+      }
     };
   }
 }

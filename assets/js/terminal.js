@@ -46,7 +46,7 @@ function typewriter(element, lines, opts) {
       const promptLine = document.createElement('span');
       promptLine.className = 'terminal-line';
       promptLine.innerHTML =
-        '<span class="t-prompt" aria-hidden="true">&gt;</span> ' +
+        '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
         '<span class="t-cmd">' + escapeHtml(block.cmd) + '</span>';
       element.appendChild(promptLine);
 
@@ -88,12 +88,19 @@ function typewriter(element, lines, opts) {
     const promptSpan = document.createElement('span');
     promptSpan.className = 't-prompt';
     promptSpan.setAttribute('aria-hidden', 'true');
-    promptSpan.textContent = '> ';
+    promptSpan.textContent = '>'; // Removed trailing space
+    
+    // Create a text node for the space to match static rendering
+    // BUT since we use absolute positioning for prompt + padding for line, 
+    // we don't need this space node anymore if we want perfect alignment
+    // or we need to account for it. Let's remove it for now to test alignment.
+    // const spaceNode = document.createTextNode(' '); 
 
     const cmdSpan = document.createElement('span');
     cmdSpan.className = 't-cmd';
 
     promptLine.appendChild(promptSpan);
+    // promptLine.appendChild(spaceNode); 
     promptLine.appendChild(cmdSpan);
 
     // Type the command
@@ -165,7 +172,7 @@ function renderTerminalBlock(container, commands) {
     promptLine.className = 'terminal-line';
     promptLine.innerHTML =
       '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
-      ' <span class="t-cmd">' + escapeHtml(block.cmd) + '</span>';
+      '<span class="t-cmd">' + escapeHtml(block.cmd) + '</span>'; // No space char here
     container.appendChild(promptLine);
 
     const outputs = Array.isArray(block.output) ? block.output : [block.output];

@@ -20,6 +20,14 @@ function runHero() {
   var el = document.getElementById('hero-terminal');
   if (!el) return;
 
+  // Check if user has seen the animation before
+  var hasSeenAnimation = false;
+  try {
+    hasSeenAnimation = localStorage.getItem('ub-hero-seen');
+  } catch (e) {
+    // Ignore storage errors
+  }
+  
   var lines = [
     {
       cmd: 'whoami',
@@ -35,18 +43,28 @@ function runHero() {
     },
   ];
 
+  // Speed up animation for returning visitors
+  var speed = hasSeenAnimation ? { charSpeed: 15, lineDelay: 80, blockDelay: 150 } : { charSpeed: 45, lineDelay: 180, blockDelay: 350 };
+
   typewriter(el, lines, {
-    charSpeed: 45,
-    lineDelay: 180,
-    blockDelay: 350,
+    charSpeed: speed.charSpeed,
+    lineDelay: speed.lineDelay,
+    blockDelay: speed.blockDelay,
     onDone: function() {
       // Add blinking cursor at the end
       var lastLine = document.createElement('span');
       lastLine.className = 'terminal-line';
       lastLine.innerHTML =
-        '<span class="t-prompt" aria-hidden="true">&gt;</span> ';
+        '<span class="t-prompt" aria-hidden="true">&gt;</span>'; // Removed trailing space
       terminalCursor(lastLine);
       el.appendChild(lastLine);
+      
+      // Mark as seen
+      try {
+        localStorage.setItem('ub-hero-seen', 'true');
+      } catch (e) {
+        // Ignore storage errors
+      }
     },
   });
 }
@@ -58,9 +76,9 @@ function loadNowPreview() {
   var container = document.getElementById('now-preview');
   if (!container) return;
 
-  fetch('data/now.json')
+  fetchWithRetry('data/now.json', 2)
     .then(function(res) {
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load');
       return res.json();
     })
     .then(function(data) {
@@ -75,12 +93,13 @@ function loadNowPreview() {
         },
       ]);
     })
-    .catch(function() {
+    .catch(function(err) {
       container.innerHTML = '';
-      var err = document.createElement('span');
-      err.className = 'state-error u-mono';
-      err.textContent = 'Could not load status.';
-      container.appendChild(err);
+      var errEl = document.createElement('span');
+      errEl.className = 'state-error u-mono';
+      errEl.textContent = 'Could not load status.';
+      container.appendChild(errEl);
+      if (console && console.error) console.error('Now preview error:', err);
     });
 }
 
@@ -92,16 +111,24 @@ function loadLabPreview() {
   if (!container) return;
 
   // Fetch experiments first; fall back gracefully
-  fetch('data/lab/experiments.json')
+  fetchWithRetry('data/lab/experiments.json', 2)
     .then(function(res) {
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load');
       return res.json();
     })
     .then(function(entries) {
       container.innerHTML = '';
 
       var recent = entries.slice(0, 2);
-      if (!recent.length) return;
+      if (!recent.length) {
+        var empty = document.createElement('span');
+        empty.className = 'u-mono';
+        empty.style.fontSize = 'var(--font-size-sm)';
+        empty.style.color = 'var(--color-text-muted)';
+        empty.textContent = 'no experiments yet';
+        container.appendChild(empty);
+        return;
+      }
 
       var list = document.createElement('div');
       list.className = 'preview-list';
@@ -125,13 +152,14 @@ function loadLabPreview() {
 
       container.appendChild(list);
     })
-    .catch(function() {
+    .catch(function(err) {
       container.innerHTML = '';
-      var err = document.createElement('span');
-      err.className = 'state-error u-mono';
-      err.style.fontSize = 'var(--font-size-sm)';
-      err.textContent = 'Could not load lab preview.';
-      container.appendChild(err);
+      var errEl = document.createElement('span');
+      errEl.className = 'state-error u-mono';
+      errEl.style.fontSize = 'var(--font-size-sm)';
+      errEl.textContent = 'Could not load lab preview.';
+      container.appendChild(errEl);
+      if (console && console.error) console.error('Lab preview error:', err);
     });
 }
 
@@ -142,9 +170,9 @@ function loadNotesPreview() {
   var container = document.getElementById('notes-preview');
   if (!container) return;
 
-  fetch('data/notes-index.json')
+  fetchWithRetry('data/notes-index.json', 2)
     .then(function(res) {
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error('Failed to load');
       return res.json();
     })
     .then(function(entries) {
@@ -180,12 +208,29 @@ function loadNotesPreview() {
 
       container.appendChild(list);
     })
-    .catch(function() {
+    .catch(function(err) {
       container.innerHTML = '';
-      var err = document.createElement('span');
-      err.className = 'state-error u-mono';
-      err.style.fontSize = 'var(--font-size-sm)';
-      err.textContent = 'Could not load notes preview.';
-      container.appendChild(err);
+      var errEl = document.createElement('span');
+      errEl.className = 'state-error u-mono';
+      errEl.style.fontSize = 'var(--font-size-sm)';
+      errEl.textContent = 'Could not load notes preview.';
+      container.appendChild(errEl);
+      if (console && console.error) console.error('Notes preview error:', err);
     });
+}
+
+/* ============================================================
+   FETCH WITH RETRY
+   ============================================================ */
+function fetchWithRetry(url, retries) {
+  return fetch(url).catch(function(err) {
+    if (retries > 0) {
+      return new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve(fetchWithRetry(url, retries - 1));
+        }, 1000);
+      });
+    }
+    throw err;
+  });
 }
