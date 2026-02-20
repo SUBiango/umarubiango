@@ -165,7 +165,7 @@ function renderNotesList() {
     var li = document.createElement('li');
     var link = document.createElement('a');
     link.className = 'note-list-item';
-    link.href = '#' + note.slug;
+    link.href = getCanonicalNotePath(note.slug);
     link.setAttribute('data-slug', note.slug);
 
     var dateEl = document.createElement('span');
@@ -189,7 +189,13 @@ function renderNotesList() {
 function handleHash() {
   var hash = window.location.hash.slice(1); // strip #
   if (hash) {
-    openNote(hash);
+    var slug = hash;
+    try {
+      slug = decodeURIComponent(hash);
+    } catch (e) {
+      slug = hash;
+    }
+    window.location.replace(getCanonicalNotePath(slug));
   } else {
     showList();
   }
@@ -347,7 +353,7 @@ function renderNote(slug, fm, body) {
   updateSocialMeta({
     title: document.title,
     description: fm.excerpt || getTextExcerpt(body),
-    url: NOTES_PAGE_URL + '#' + slug,
+    url: getCanonicalNoteUrl(slug),
   });
 }
 
@@ -366,7 +372,7 @@ function renderPostNav(currentSlug) {
   if (older) {
     var prev = document.createElement('a');
     prev.className = 'note-post-nav__prev';
-    prev.href = '#' + encodeURIComponent(older.slug);
+    prev.href = getCanonicalNotePath(older.slug);
     prev.innerHTML =
       '<span class="note-post-nav__label">← previous post</span>' +
       '<span class="note-post-nav__title">' + escapeHtml(older.title || older.slug) + '</span>';
@@ -376,7 +382,7 @@ function renderPostNav(currentSlug) {
   if (newer) {
     var next = document.createElement('a');
     next.className = 'note-post-nav__next';
-    next.href = '#' + encodeURIComponent(newer.slug);
+    next.href = getCanonicalNotePath(newer.slug);
     next.innerHTML =
       '<span class="note-post-nav__label">next post →</span>' +
       '<span class="note-post-nav__title">' + escapeHtml(newer.title || newer.slug) + '</span>';
@@ -547,6 +553,14 @@ function updateSocialMeta(meta) {
 function setMeta(selector, content) {
   var el = document.querySelector(selector);
   if (el) el.setAttribute('content', content);
+}
+
+function getCanonicalNotePath(slug) {
+  return 'notes/' + encodeURIComponent(slug) + '/';
+}
+
+function getCanonicalNoteUrl(slug) {
+  return new URL('/notes/' + encodeURIComponent(slug) + '/', window.location.origin).toString();
 }
 
 function getTextExcerpt(markdown) {
