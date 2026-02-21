@@ -35,11 +35,11 @@ function runHero() {
     },
     {
       cmd: 'role',
-      output: 'Emerging markets product builder',
+      output: 'Founder. Software product builder',
     },
     {
       cmd: 'thesis',
-      output: 'Practical software products for hard markets, built in public',
+      output: 'Reliable infrastructure, under real constraints. ',
     },
   ];
 
