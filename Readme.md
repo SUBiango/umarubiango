@@ -76,6 +76,37 @@ Personal website of Umaru B Biango — hybrid hacker-lab + clean portfolio.
 
 ---
 
+## Caching Strategy
+
+No build pipeline means no content-hashed filenames. Cache busting is handled manually via a `?v=` query string on all CSS and JS references in every HTML file.
+
+### Cache headers (set in `netlify.toml`)
+
+| Resource | Strategy | Reason |
+|---|---|---|
+| `assets/css/*` | `no-cache` | Always revalidate via ETag |
+| `assets/js/*` | `no-cache` | Always revalidate via ETag |
+| `assets/images/*` | `immutable`, 1 year | Never changes at same URL |
+| `assets/fonts/*` | `immutable`, 1 year | Never changes at same URL |
+| `data/now.json` | `no-cache` | Updated content |
+| `data/*` | 5 minutes | Infrequently updated |
+| `*.html` / `/` | `no-cache` | Always serve latest markup |
+
+### When to bump `?v=`
+
+Bump the version string in all HTML files **any time you change a CSS or JS file** before deploying.
+
+```zsh
+# Replace old version with new date across all HTML files
+find . -name "*.html" | xargs sed -i '' 's/?v=20260221/?v=YYYYMMDD/g'
+```
+
+- Changed `main.css` or any `.js` file → bump `?v=`
+- Changed only `.json` data or HTML content → no need to bump
+- When in doubt → bump it (harmless)
+
+---
+
 ## Development
 
 No build step. Open any `.html` file directly or use a local server:
