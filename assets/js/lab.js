@@ -9,7 +9,6 @@
 var LAB_CATEGORIES = [
   { key: 'experiments',  label: 'experiments',  file: 'data/lab/experiments.json'  },
   { key: 'architecture', label: 'architecture',  file: 'data/lab/architecture.json' },
-  { key: 'insights',     label: 'insights',      file: 'data/lab/insights.json'     },
   { key: 'failures',     label: 'failures',      file: 'data/lab/failures.json'     },
 ];
 

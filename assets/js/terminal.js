@@ -55,10 +55,7 @@ function typewriter(element, lines, opts) {
         if (line === '') {
           element.appendChild(spacer());
         } else {
-          const outLine = document.createElement('span');
-          outLine.className = 't-out';
-          outLine.textContent = line;
-          element.appendChild(outLine);
+          element.appendChild(renderOutputLine(line));
         }
       });
       element.appendChild(spacer());
@@ -120,10 +117,7 @@ function typewriter(element, lines, opts) {
             if (line === '') {
               element.appendChild(spacer());
             } else {
-              const outLine = document.createElement('span');
-              outLine.className = 't-out';
-              outLine.textContent = line;
-              element.appendChild(outLine);
+              element.appendChild(renderOutputLine(line));
             }
           });
           element.appendChild(spacer());
@@ -180,10 +174,7 @@ function renderTerminalBlock(container, commands) {
       if (line === '') {
         container.appendChild(spacer());
       } else {
-        const outLine = document.createElement('span');
-        outLine.className = 't-out';
-        outLine.textContent = line;
-        container.appendChild(outLine);
+        container.appendChild(renderOutputLine(line));
       }
     });
 
@@ -232,4 +223,22 @@ function spacer() {
   s.className = 't-spacer';
   s.setAttribute('aria-hidden', 'true');
   return s;
+}
+
+function renderOutputLine(line) {
+  const outLine = document.createElement('span');
+  outLine.className = 't-out';
+  if (line && typeof line === 'object' && 'key' in line) {
+    const keySpan = document.createElement('span');
+    keySpan.className = 't-key';
+    keySpan.textContent = escapeHtml(line.key) + ':';
+    const valSpan = document.createElement('span');
+    valSpan.className = 't-val';
+    valSpan.textContent = line.value != null ? String(line.value) : '';
+    outLine.appendChild(keySpan);
+    outLine.appendChild(valSpan);
+  } else {
+    outLine.textContent = line != null ? String(line) : '';
+  }
+  return outLine;
 }

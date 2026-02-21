@@ -137,7 +137,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-command);
+  color: var(--color-accent-violet);
 }
 
 a:not(.nav-logo):not(.nav-links a):not(.btn):not(.preview-item--link):not(.note-list-item):hover::after {
@@ -456,7 +456,24 @@ section {
   color: var(--color-text);
   display: block;
   padding-left: var(--terminal-prompt-width);
+  margin-bottom: var(--space-2);
 }
+
+.t-out:last-of-type {
+  margin-bottom: 0;
+}
+
+.t-key {
+  color: var(--color-text-muted);
+  display: inline-block;
+  min-width: 12ch;
+}
+
+.t-val {
+  display: inline;
+}
+
+
 
 /* Blank spacer line between blocks */
 .t-spacer {
@@ -1273,6 +1290,21 @@ section {
 
   .terminal-block {
     padding: var(--space-4) var(--space-5);
+  }
+
+  .t-out {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+  }
+
+  .t-key {
+    min-width: 0;
+  }
+
+  .t-val {
+    display: block;
   }
 }
 

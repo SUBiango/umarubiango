@@ -24,10 +24,9 @@ function loadNow() {
         {
           cmd: 'currently',
           output: [
-            'building:   ' + data.building,
-            'learning:   ' + data.learning,
-            'optimizing: ' + data.optimizing,
-            'ignoring:   ' + data.ignoring,
+            { key: 'working on', value: data.working_on },
+            { key: 'learning',   value: data.learning },
+            { key: 'reading',    value: data.reading },
           ],
         },
         {
