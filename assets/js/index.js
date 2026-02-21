@@ -1,6 +1,6 @@
 /**
  * index.js — Homepage
- * Handles typewriter hero animation, Now preview, and Lab preview.
+ * Handles typewriter hero animation, Now preview, and Notes preview.
  */
 
 'use strict';
@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
   initNav();
   runHero();
   loadNowPreview();
-  loadLabPreview();
   loadNotesPreview();
 });
 
@@ -100,66 +99,6 @@ function loadNowPreview() {
       errEl.textContent = 'Could not load status.';
       container.appendChild(errEl);
       if (console && console.error) console.error('Now preview error:', err);
-    });
-}
-
-/* ============================================================
-   LAB PREVIEW
-   ============================================================ */
-function loadLabPreview() {
-  var container = document.getElementById('lab-preview');
-  if (!container) return;
-
-  // Fetch experiments first; fall back gracefully
-  fetchWithRetry('data/lab/experiments.json', 2)
-    .then(function(res) {
-      if (!res.ok) throw new Error('Failed to load');
-      return res.json();
-    })
-    .then(function(entries) {
-      container.innerHTML = '';
-
-      var recent = entries.slice(0, 2);
-      if (!recent.length) {
-        var empty = document.createElement('span');
-        empty.className = 'u-mono';
-        empty.style.fontSize = 'var(--font-size-sm)';
-        empty.style.color = 'var(--color-text-muted)';
-        empty.textContent = 'no experiments yet';
-        container.appendChild(empty);
-        return;
-      }
-
-      var list = document.createElement('div');
-      list.className = 'preview-list';
-
-      recent.forEach(function(entry) {
-        var item = document.createElement('div');
-        item.className = 'preview-item';
-
-        var title = document.createElement('div');
-        title.className = 'preview-item__title';
-        title.textContent = entry.title;
-
-        var meta = document.createElement('div');
-        meta.className = 'preview-item__meta';
-        meta.textContent = 'experiments — ' + (entry.status || '') + ' — ' + entry.date;
-
-        item.appendChild(title);
-        item.appendChild(meta);
-        list.appendChild(item);
-      });
-
-      container.appendChild(list);
-    })
-    .catch(function(err) {
-      container.innerHTML = '';
-      var errEl = document.createElement('span');
-      errEl.className = 'state-error u-mono';
-      errEl.style.fontSize = 'var(--font-size-sm)';
-      errEl.textContent = 'Could not load lab preview.';
-      container.appendChild(errEl);
-      if (console && console.error) console.error('Lab preview error:', err);
     });
 }
 
