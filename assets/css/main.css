@@ -716,6 +716,51 @@ section {
   color: var(--color-bg);
 }
 
+/* Share buttons (inside notes) */
+.note-footer-tags {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.note-share {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.note-share__label {
+  font-family: var(--font-terminal);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  margin-right: var(--space-1);
+}
+
+.note-share__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  color: var(--color-text-muted);
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.note-share__btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.note-share__btn:hover {
+  border-color: var(--color-accent-blue);
+  color: var(--color-accent-blue);
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -979,15 +1024,34 @@ section {
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   display: flex;
+  align-items: center;
   gap: var(--space-4);
   flex-wrap: wrap;
 }
 
-.note-view__tags span {
+.note-read-time::before {
+  content: '·';
+  margin-right: var(--space-2);
+  opacity: 0.4;
+}
+
+.note-view__tags span,
+.note-view__tags a {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 3px;
   padding: 2px var(--space-2);
+}
+
+.note-view__tags a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.note-view__tags a:hover {
+  border-color: var(--color-accent-blue);
+  color: var(--color-accent-blue);
 }
 
 .note-view__tags {

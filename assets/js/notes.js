@@ -287,19 +287,11 @@ function renderNote(slug, fm, body) {
     meta.appendChild(dateEl);
   }
 
-  if (fm.tags && fm.tags.length) {
-    var tagsEl = document.createElement('span');
-    tagsEl.className = 'note-view__tags';
-    fm.tags.forEach(function(tag) {
-      var tagEl = document.createElement('span');
-      tagEl.textContent = tag;
-      tagsEl.appendChild(tagEl);
-    });
-    meta.appendChild(tagsEl);
-  }
-
   header.appendChild(meta);
   article.appendChild(header);
+
+  // Collect tags for footer (rendered after newsletter)
+  var footerTags = (fm.tags && fm.tags.length) ? fm.tags : null;
 
   // Optional featured image (from note frontmatter)
   if (fm.featured_image) {
@@ -337,6 +329,11 @@ function renderNote(slug, fm, body) {
 
   article.appendChild(bodyEl);
 
+  // Read time
+  if (typeof insertReadTime === 'function') {
+    insertReadTime(bodyEl, meta);
+  }
+
   var postNav = renderPostNav(slug);
   if (postNav) article.appendChild(postNav);
 
@@ -346,6 +343,22 @@ function renderNote(slug, fm, body) {
   // Newsletter form injection (shown by default unless explicitly disabled)
   if (fm.send !== false) {
     article.appendChild(renderNewsletterForm(slug));
+  }
+
+  // Footer tags (just before share)
+  if (footerTags) {
+    var footerTagsEl = document.createElement('div');
+    footerTagsEl.className = 'note-footer-tags';
+    var tagsSpan = document.createElement('span');
+    tagsSpan.className = 'note-view__tags';
+    footerTags.forEach(function(tag) {
+      var tagEl = document.createElement('a');
+      tagEl.href = NOTES_PAGE_URL + '?tag=' + encodeURIComponent(tag);
+      tagEl.textContent = tag;
+      tagsSpan.appendChild(tagEl);
+    });
+    footerTagsEl.appendChild(tagsSpan);
+    article.appendChild(footerTagsEl);
   }
 
   // Update page title

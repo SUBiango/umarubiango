@@ -208,6 +208,27 @@ function initNav() {
 }
 
 /* ============================================================
+   READ TIME
+   Computes estimated reading time from a .note-body element
+   and inserts a span into .note-view__meta.
+   ============================================================ */
+function calcReadTime(bodyEl) {
+  var text = bodyEl ? (bodyEl.textContent || bodyEl.innerText || '') : '';
+  var words = text.trim().split(/\s+/).filter(function(w) { return w.length > 0; }).length;
+  var minutes = Math.max(1, Math.round(words / 225));
+  return minutes + ' min read';
+}
+
+function insertReadTime(bodyEl, metaEl) {
+  if (!bodyEl || !metaEl) return;
+  if (metaEl.querySelector('.note-read-time')) return;
+  var span = document.createElement('span');
+  span.className = 'note-read-time';
+  span.textContent = calcReadTime(bodyEl);
+  metaEl.appendChild(span);
+}
+
+/* ============================================================
    HELPERS (internal)
    ============================================================ */
 function escapeHtml(str) {
