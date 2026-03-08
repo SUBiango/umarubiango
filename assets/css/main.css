@@ -1337,7 +1337,8 @@ section {
   }
 
   .terminal-block {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-4) var(--space-5) var(--space-5);
+    padding-top: calc(32px + var(--space-3));
   }
 
   .t-out {
