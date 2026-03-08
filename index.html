@@ -19,8 +19,11 @@
     <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
 
 
-  <link rel="stylesheet" href="assets/css/main.css?v=20260223">
-  <title>Umaru Sahr Biango</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/main.css?v=20260308">
 
   <!-- Structured Data (Schema.org) -->
   <script type="application/ld+json">
@@ -84,10 +87,14 @@
       <!-- Beyond the Role -->
       <section class="home-section" aria-labelledby="build-for-heading">
         <h2 id="build-for-heading" class="section-label">beyond the role</h2>
-        <p>
-          By day, I work in AI, processing data for image detection systems. 
-          By night, I build software products. Start in Sierra Leone. Scale across Sub-Saharan Africa.
-        </p>
+        <div class="terminal-block" role="region" aria-label="About Umaru">
+          <span class="terminal-line">
+            <span class="t-prompt" aria-hidden="true">&gt;</span>
+            <span class="t-cmd">cat about.txt</span>
+          </span>
+          <span class="t-out">By day, I work in AI, processing data for image detection systems.</span>
+          <span class="t-out">By night, I build software products. Start in Sierra Leone. Scale across Sub-Saharan Africa.</span>
+        </div>
       </section>
 
       <!-- Products -->
@@ -164,8 +171,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/terminal.js?v=20260223"></script>
-  <script src="assets/js/index.js?v=20260223"></script>
+  <script src="assets/js/terminal.js?v=20260308"></script>
+  <script src="assets/js/index.js?v=20260308"></script>
 
 </body>
 </html>

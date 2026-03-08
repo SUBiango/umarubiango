@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   runHero();
   loadNowPreview();
   loadNotesPreview();
+  initScrollAnimations();
 });
 
 /* ============================================================
@@ -142,6 +143,14 @@ function loadNotesPreview() {
 
         item.appendChild(title);
         item.appendChild(meta);
+
+        if (entry.excerpt) {
+          var excerpt = document.createElement('div');
+          excerpt.className = 'preview-item__excerpt';
+          excerpt.textContent = entry.excerpt;
+          item.appendChild(excerpt);
+        }
+
         list.appendChild(item);
       });
 
@@ -171,5 +180,32 @@ function fetchWithRetry(url, retries) {
       });
     }
     throw err;
+  });
+}
+
+/* ============================================================
+   SCROLL ENTRANCE ANIMATIONS
+   Stagger-fades .home-section elements as they enter the viewport.
+   Skipped entirely when prefers-reduced-motion is set.
+   ============================================================ */
+function initScrollAnimations() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!('IntersectionObserver' in window)) return;
+
+  var sections = document.querySelectorAll('.home-section');
+  if (!sections.length) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  sections.forEach(function(section) {
+    section.classList.add('will-animate');
+    observer.observe(section);
   });
 }
