@@ -17,6 +17,8 @@ For the past two months I’ve been working on an e-commerce marketplace product
 
 A friend of mine found this mind-boggling. With LLMs generating entire apps over a weekend, he couldn’t understand why I was still working on the first version months later.
 
+> What's taking you so long?
+
 It’s a fair question. But it misses something important.
 Code was never the real bottleneck. Even before AI.
 
@@ -26,6 +28,8 @@ All of that work sits outside the code.
 
 That’s the difference between software that simply runs and software that survives the real world.
 
+## Pivot To Software
+
 Before pivoting Dot Portal toward software development, most of my work was website design. When I started building my first product, I realized quickly that writing code alone wouldn’t be enough. I needed to understand system architecture and design.
 
 More importantly, I needed to understand the problem domain.
@@ -34,6 +38,8 @@ In traditional development teams, there are often domain experts shaping the sol
 Before starting this project, I didn’t know much about online commerce. So I spent a lot of time researching the domain — how orders flow through a system, how inventory behaves, how payments interact with fulfillment, and where things usually break.
 
 There are days when I open my laptop and don’t write a single line of code. I just read, sketch ideas, rethink assumptions, and adjust the design.
+
+## Prompt AI
 
 Could I prompt my way into a working product with AI? Probably.
 But commerce is not a toy project. When money is involved, mistakes become expensive very quickly.
@@ -51,4 +57,4 @@ So yes, progress might look slow.
 
 But deep understanding is what enables speed later.
 
-Because when you truly understand how the system works, AI becomes an accelerator — not a shortcut.
+Because when you truly understand how the system works, AI becomes an accelerator. Not a shortcut.
