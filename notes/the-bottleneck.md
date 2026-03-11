@@ -20,6 +20,7 @@ A friend of mine found this mind-boggling. With LLMs generating entire apps over
 > What's taking you so long?
 
 It’s a fair question. But it misses something important.
+
 Code was never the real bottleneck. Even before AI.
 
 Successful software products are far more than just the code. Someone has to think through the system, design the architecture, and make trade-offs that fit the use case. There’s infrastructure to set up, monitoring to configure, and deployment pipelines to manage. And eventually something will break — so you need to know how the system behaves when it does.
