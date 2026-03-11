@@ -59,3 +59,5 @@ So yes, progress might look slow.
 But deep understanding is what enables speed later.
 
 Because when you truly understand how the system works, AI becomes an accelerator. Not a shortcut.
+
+*Credit: cover photo is a 3D cartoon of me at the office done by AI.*
