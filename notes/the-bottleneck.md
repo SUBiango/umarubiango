@@ -6,6 +6,8 @@ tags: [development, product, strategy]
 slug: "the-bottleneck"
 featured_image: "/assets/images/notes/umaru-catton-xa-office.webp"
 featured_image_alt: "Cover image for The Bottleneck"
+featured_image_width: 1536
+featured_image_height: 1024
 send: true
 broadcast: falses
 sent: false

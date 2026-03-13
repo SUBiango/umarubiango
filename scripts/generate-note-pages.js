@@ -108,6 +108,9 @@ noteEntries.forEach(function(entry) {
     '  <meta property="og:site_name" content="Umaru Biango">\n' +
     (featuredImageUrl ? ('  <meta property="og:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
     (featuredImageUrl ? ('  <meta property="og:image:alt" content="' + escapeHtml(featuredImageAlt) + '">\n') : '') +
+    (featuredImageUrl && featuredImageWidth  ? ('  <meta property="og:image:width" content="' + featuredImageWidth + '">\n') : '') +
+    (featuredImageUrl && featuredImageHeight ? ('  <meta property="og:image:height" content="' + featuredImageHeight + '">\n') : '') +
+    (featuredImageUrl ? ('  <meta property="og:image:type" content="' + (featuredImageUrl.endsWith('.webp') ? 'image/webp' : featuredImageUrl.endsWith('.png') ? 'image/png' : 'image/jpeg') + '">\n') : '') +
     '  <meta name="twitter:card" content="' + (featuredImageUrl ? 'summary_large_image' : 'summary') + '">\n' +
     '  <meta name="twitter:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
