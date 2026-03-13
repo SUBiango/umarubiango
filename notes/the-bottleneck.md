@@ -33,7 +33,7 @@ That’s the difference between software that simply runs and software that surv
 
 ## Pivot To Software
 
-Before pivoting Dot Portal toward software development, most of my work was website design. When I started building my first product, I realized quickly that writing code alone wouldn’t be enough. I needed to understand system architecture and design.
+Before pivoting Dot [Dot Portal](https://www.dotportalsl.com) toward software development, most of my work was website design. When I started building my first product, I realized quickly that writing code alone wouldn’t be enough. I needed to understand system architecture and design.
 
 More importantly, I needed to understand the problem domain.
 In traditional development teams, there are often domain experts shaping the solutions engineers eventually implement. But when you’re building solo, you wear every hat.

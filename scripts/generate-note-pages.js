@@ -7,6 +7,7 @@ var matter = require('gray-matter');
 var marked = require('marked');
 
 var ROOT = path.join(__dirname, '..');
+var ASSET_VERSION = new Date().toISOString().slice(0, 10).replace(/-/g, '');
 var NOTES_DIR = path.join(ROOT, 'notes');
 var SITE_URL = 'https://umarubiango.com';
 
@@ -116,7 +117,7 @@ noteEntries.forEach(function(entry) {
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
     (featuredImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
     '  <link rel="canonical" href="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
-    '  <link rel="stylesheet" href="../../assets/css/main.css">\n' +
+    '  <link rel="stylesheet" href="../../assets/css/main.css?v=' + ASSET_VERSION + '">\n' +
     '  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">\n' +
     '  <title>' + escapeHtml(title) + ' — Umaru Biango</title>\n' +
     '</head>\n' +
@@ -174,7 +175,7 @@ noteEntries.forEach(function(entry) {
     '    </div>\n' +
     '  </footer>\n' +
     '  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>\n' +
-    '  <script src="../../assets/js/terminal.js"></script>\n' +
+    '  <script src="../../assets/js/terminal.js?v=' + ASSET_VERSION + '"></script>\n' +
     '  <script>document.addEventListener("DOMContentLoaded",function(){if(typeof initNav==="function"){initNav();}if(typeof insertReadTime==="function"){insertReadTime(document.querySelector(\'.note-body\'),document.querySelector(\'.note-view__meta\'));}if(typeof initShareButtons==="function"){initShareButtons();}if(window.Prism){Prism.highlightAll();}});</script>\n' +
     '</body>\n' +
     '</html>\n';
