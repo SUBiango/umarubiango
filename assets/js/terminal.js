@@ -7,6 +7,7 @@
  *   terminalCursor(element)
  *   renderTerminalBlock(container, commands)
  *   initNav()
+ *   initShareButtons()
  */
 
 'use strict';
@@ -226,6 +227,43 @@ function insertReadTime(bodyEl, metaEl) {
   span.className = 'note-read-time';
   span.textContent = calcReadTime(bodyEl);
   metaEl.appendChild(span);
+}
+
+/* ============================================================
+   SHARE BUTTONS
+   Intercepts .note-share__btn clicks.
+   - navigator.share available (mobile): triggers the native OS share sheet
+   - Otherwise (desktop): opens a small popup window, which prevents the OS
+     from intercepting the URL as a deep link to a native app.
+   ============================================================ */
+function initShareButtons() {
+  var buttons = document.querySelectorAll('.note-share__btn');
+  if (!buttons.length) return;
+
+  var titleEl = document.querySelector('h1');
+  var pageTitle = titleEl ? titleEl.textContent.trim() : document.title;
+  var pageUrl  = window.location.href;
+
+  // Only use the native share sheet on real touch devices (phones/tablets).
+  // navigator.share exists on macOS Safari too but opens the OS share sheet
+  // instead of a platform-specific share dialog, which is unhelpful on desktop.
+  var isTouchDevice = navigator.maxTouchPoints > 1;
+
+  buttons.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      if (isTouchDevice && navigator.share) {
+        navigator.share({ title: pageTitle, url: pageUrl }).catch(function() {});
+        return;
+      }
+
+      var href = btn.getAttribute('href');
+      if (href) {
+        window.open(href, 'share-popup', 'width=620,height=460,resizable=yes,scrollbars=yes,noopener');
+      }
+    });
+  });
 }
 
 /* ============================================================

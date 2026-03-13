@@ -172,7 +172,7 @@ noteEntries.forEach(function(entry) {
     '  </footer>\n' +
     '  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>\n' +
     '  <script src="../../assets/js/terminal.js"></script>\n' +
-    '  <script>document.addEventListener("DOMContentLoaded",function(){if(typeof initNav==="function"){initNav();}if(typeof insertReadTime==="function"){insertReadTime(document.querySelector(\'.note-body\'),document.querySelector(\'.note-view__meta\'));}if(window.Prism){Prism.highlightAll();}});</script>\n' +
+    '  <script>document.addEventListener("DOMContentLoaded",function(){if(typeof initNav==="function"){initNav();}if(typeof insertReadTime==="function"){insertReadTime(document.querySelector(\'.note-body\'),document.querySelector(\'.note-view__meta\'));}if(typeof initShareButtons==="function"){initShareButtons();}if(window.Prism){Prism.highlightAll();}});</script>\n' +
     '</body>\n' +
     '</html>\n';
 
