@@ -96,11 +96,6 @@ No build pipeline means no content-hashed filenames. Cache busting is handled ma
 
 Bump the version string in all HTML files **any time you change a CSS or JS file** before deploying.
 
-```zsh
-# Replace old version with new date across all HTML files
-find . -name "*.html" | xargs sed -i '' 's/?v=20260308/?v=2026MMDD/g'
-```
-
 - Changed `main.css` or any `.js` file → bump `?v=`
 - Changed only `.json` data or HTML content → no need to bump
 - When in doubt → bump it (harmless)
@@ -138,7 +133,7 @@ umarubiango.dev/
 │   ├── fonts/
 │   └── images/
 ├── data/
-│   ├── lab/
+│   ├── lab/ 
 │   │   ├── experiments.json
 │   │   ├── architecture.json
 │   │   ├── insights.json
