@@ -46,8 +46,11 @@ noteEntries.forEach(function(entry) {
   var featuredImageWidth = fm.featured_image_width != null ? fm.featured_image_width : fm.featuredImageWidth;
   var featuredImageHeight = fm.featured_image_height != null ? fm.featured_image_height : fm.featuredImageHeight;
   var featuredImageUrl = featuredImage ? toAbsoluteUrl(featuredImage) : '';
+  var socialImageUrl = featuredImage ? toSocialImageUrl(featuredImage) : '';
+  var socialImageType = socialImageUrl ? toImageMimeType(socialImageUrl) : '';
   var showNewsletter = fm.send !== false;
   var postNavHtml = buildPostNavHtml(sortedNotes, slug);
+  var articleMetaHtml = buildArticleMetaHtml(fm, tags);
 
   var htmlBody = marked.parse(parsed.content);
   htmlBody = htmlBody.replace(/^\s*<h1\b[^>]*>[\s\S]*?<\/h1>\s*/i, '');
@@ -101,20 +104,25 @@ noteEntries.forEach(function(entry) {
     '  <meta charset="UTF-8">\n' +
     '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     '  <meta name="description" content="' + escapeHtml(excerpt) + '">\n' +
+    '  <meta name="author" content="Umaru Biango">\n' +
     '  <meta property="og:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
     '  <meta property="og:description" content="' + escapeHtml(excerpt) + '">\n' +
     '  <meta property="og:type" content="article">\n' +
     '  <meta property="og:url" content="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
     '  <meta property="og:site_name" content="Umaru Biango">\n' +
-    (featuredImageUrl ? ('  <meta property="og:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
-    (featuredImageUrl ? ('  <meta property="og:image:alt" content="' + escapeHtml(featuredImageAlt) + '">\n') : '') +
-    (featuredImageUrl && featuredImageWidth  ? ('  <meta property="og:image:width" content="' + featuredImageWidth + '">\n') : '') +
-    (featuredImageUrl && featuredImageHeight ? ('  <meta property="og:image:height" content="' + featuredImageHeight + '">\n') : '') +
-    (featuredImageUrl ? ('  <meta property="og:image:type" content="' + (featuredImageUrl.endsWith('.webp') ? 'image/webp' : featuredImageUrl.endsWith('.png') ? 'image/png' : 'image/jpeg') + '">\n') : '') +
+    '  <meta property="og:locale" content="en_US">\n' +
+    articleMetaHtml +
+    (socialImageUrl ? ('  <meta property="og:image" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
+    (socialImageUrl ? ('  <meta property="og:image:url" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
+    (socialImageUrl ? ('  <meta property="og:image:secure_url" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
+    (socialImageUrl ? ('  <meta property="og:image:alt" content="' + escapeHtml(featuredImageAlt) + '">\n') : '') +
+    (socialImageUrl && featuredImageWidth  ? ('  <meta property="og:image:width" content="' + featuredImageWidth + '">\n') : '') +
+    (socialImageUrl && featuredImageHeight ? ('  <meta property="og:image:height" content="' + featuredImageHeight + '">\n') : '') +
+    (socialImageType ? ('  <meta property="og:image:type" content="' + socialImageType + '">\n') : '') +
     '  <meta name="twitter:card" content="' + (featuredImageUrl ? 'summary_large_image' : 'summary') + '">\n' +
     '  <meta name="twitter:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
-    (featuredImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(featuredImageUrl) + '">\n') : '') +
+    (socialImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
     '  <link rel="canonical" href="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
     '  <link rel="stylesheet" href="../../assets/css/main.css">\n' +
     '  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">\n' +
@@ -175,7 +183,7 @@ noteEntries.forEach(function(entry) {
     '  </footer>\n' +
     '  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>\n' +
     '  <script src="../../assets/js/terminal.js"></script>\n' +
-    '  <script>document.addEventListener("DOMContentLoaded",function(){if(typeof initNav==="function"){initNav();}if(typeof insertReadTime==="function"){insertReadTime(document.querySelector(\'.note-body\'),document.querySelector(\'.note-view__meta\'));}if(typeof initShareButtons==="function"){initShareButtons();}if(window.Prism){Prism.highlightAll();}});</script>\n' +
+    '  <script src="../../assets/js/note-page.js"></script>\n' +
     '</body>\n' +
     '</html>\n';
 
@@ -216,10 +224,66 @@ function toAbsoluteUrl(url) {
   return SITE_URL + (url.charAt(0) === '/' ? url : '/' + url);
 }
 
+function toSocialImageUrl(imageUrl) {
+  if (!imageUrl) return '';
+  var fallback = findSocialImageFallback(imageUrl);
+  return toAbsoluteUrl(fallback || imageUrl);
+}
+
 function toSortTimestamp(value) {
   if (!value) return 0;
   var d = value instanceof Date ? value : new Date(String(value));
   return isNaN(d.getTime()) ? 0 : d.getTime();
+}
+
+function toIsoDateTime(value) {
+  if (!value) return '';
+  var d = value instanceof Date ? value : new Date(String(value));
+  if (isNaN(d.getTime())) return '';
+  return d.toISOString();
+}
+
+function buildArticleMetaHtml(fm, tags) {
+  var lines = [];
+  var publishedTime = toIsoDateTime(fm.date);
+
+  if (publishedTime) {
+    lines.push('  <meta property="article:published_time" content="' + escapeHtml(publishedTime) + '">');
+  }
+
+  lines.push('  <meta property="article:author" content="' + SITE_URL + '/">');
+  lines.push('  <meta property="article:section" content="Notes">');
+
+  tags.forEach(function(tag) {
+    lines.push('  <meta property="article:tag" content="' + escapeHtml(tag) + '">');
+  });
+
+  return lines.length ? lines.join('\n') + '\n' : '';
+}
+
+function findSocialImageFallback(imageUrl) {
+  if (!/\.webp(?:$|[?#])/i.test(imageUrl)) return '';
+  if (/^https?:\/\//i.test(imageUrl)) return '';
+
+  var cleanUrl = String(imageUrl).split(/[?#]/)[0];
+  var normalized = cleanUrl.charAt(0) === '/' ? cleanUrl.slice(1) : cleanUrl;
+  var basePath = path.join(ROOT, normalized).replace(/\.webp$/i, '');
+  var candidates = [basePath + '.jpg', basePath + '.jpeg', basePath + '.png'];
+
+  for (var i = 0; i < candidates.length; i++) {
+    if (fs.existsSync(candidates[i])) {
+      return '/' + path.relative(ROOT, candidates[i]).replace(/\\/g, '/');
+    }
+  }
+
+  return '';
+}
+
+function toImageMimeType(url) {
+  if (/\.png(?:$|[?#])/i.test(url)) return 'image/png';
+  if (/\.gif(?:$|[?#])/i.test(url)) return 'image/gif';
+  if (/\.webp(?:$|[?#])/i.test(url)) return 'image/webp';
+  return 'image/jpeg';
 }
 
 function buildPostNavHtml(sorted, currentSlug) {
