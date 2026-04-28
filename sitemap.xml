@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://umarubiango.com/</loc>
+    <loc>https://www.umarubiango.com/</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://umarubiango.com/notes.html</loc>
+    <loc>https://www.umarubiango.com/notes.html</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://umarubiango.com/how-i-think.html</loc>
+    <loc>https://www.umarubiango.com/how-i-think.html</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://umarubiango.com/now.html</loc>
+    <loc>https://www.umarubiango.com/now.html</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://umarubiango.com/contact.html</loc>
+    <loc>https://www.umarubiango.com/contact.html</loc>
     <lastmod>2026-02-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

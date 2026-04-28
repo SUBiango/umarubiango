@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://umarubiango.com/sitemap.xml
+Sitemap: https://www.umarubiango.com/sitemap.xml
 
 # Disallow private directories
 Disallow: /netlify/

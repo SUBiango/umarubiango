@@ -8,7 +8,7 @@ var marked = require('marked');
 
 var ROOT = path.join(__dirname, '..');
 var NOTES_DIR = path.join(ROOT, 'notes');
-var SITE_URL = 'https://umarubiango.com';
+var SITE_URL = 'https://www.umarubiango.com';
 
 var markdownFiles = fs.readdirSync(NOTES_DIR)
   .filter(function(name) { return name.endsWith('.md'); });

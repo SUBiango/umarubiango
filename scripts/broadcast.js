@@ -34,7 +34,7 @@ try {
 }
 
 var API_KEY    = process.env.CONVERTKIT_API_KEY;
-var BASE_URL   = process.env.CONVERTKIT_BASE_URL || 'https://umarubiango.com';
+var BASE_URL   = process.env.CONVERTKIT_BASE_URL || 'https://www.umarubiango.com';
 var NOTES_DIR  = path.join(__dirname, '..', 'notes');
 var DRY_RUN    = process.env.DRY_RUN === '1';
 var CK_API     = 'https://api.convertkit.com/v3';
