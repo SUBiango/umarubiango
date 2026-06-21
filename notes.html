@@ -10,12 +10,15 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.umarubiango.com/notes.html">
   <meta property="og:site_name" content="Umaru Biango">
+  <meta property="og:locale" content="en_US">
   <meta property="og:image" content="https://www.umarubiango.com/assets/images/og-image.png">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Notes — Umaru Biango">
   <meta name="twitter:description" content="Field notes from building in Sierra Leone — what breaks, what survives, what scales.">
   <meta name="twitter:image" content="https://www.umarubiango.com/assets/images/og-image.png">
+
+  <link rel="canonical" href="https://www.umarubiango.com/notes.html">
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" href="assets/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -27,9 +30,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-
-  <!-- Prism.js syntax highlighting -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
 
   <link rel="stylesheet" href="assets/css/main.css">
   <title>Notes — Umaru Biango</title>
@@ -84,17 +84,6 @@
         </nav>
       </div>
 
-      <!-- Full note view (hidden until note is selected) -->
-      <div id="notes-note-view" class="note-view" aria-live="polite">
-        <button id="notes-back-btn" class="note-view__back" aria-label="Back to notes list">
-          notes
-        </button>
-
-        <article id="notes-article">
-          <!-- Populated by notes.js -->
-        </article>
-      </div>
-
     </div>
   </main>
 
@@ -125,9 +114,6 @@
     </div>
   </footer>
 
-  <!-- Marked.js for Markdown parsing -->
-  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js,npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
   <script src="assets/js/terminal.js"></script>
   <script src="assets/js/notes.js"></script>
 

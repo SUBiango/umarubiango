@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sierra Leone has achieved 93% national civial registration and ID issuance coverage. That's a major achievement by NCRA.">
+  <meta name="author" content="Umaru Biango">
+  <meta property="og:title" content="Building Sierrafy: An Open Identity Verification SDK for Sierra Leone">
+  <meta property="og:description" content="Sierra Leone has achieved 93% national civial registration and ID issuance coverage. That's a major achievement by NCRA.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.umarubiango.com/notes/introducing-sierrafy/">
+  <meta property="og:site_name" content="Umaru Biango">
+  <meta property="og:locale" content="en_US">
+  <meta property="article:published_time" content="2026-06-21T00:00:00.000Z">
+  <meta property="article:author" content="https://www.umarubiango.com/">
+  <meta property="article:section" content="Notes">
+  <meta property="article:tag" content="development">
+  <meta property="article:tag" content="open-source">
+  <meta property="article:tag" content="infrastracture">
+  <meta property="article:tag" content="NIN">
+  <meta property="og:image" content="https://www.umarubiango.com/assets/images/notes/laptop-on-a-desk.jpg">
+  <meta property="og:image:secure_url" content="https://www.umarubiango.com/assets/images/notes/laptop-on-a-desk.jpg">
+  <meta property="og:image:alt" content="Cover image for Building Sierrafy: An Open Identity Verification SDK for Sierra Leone">
+  <meta property="og:image:width" content="700">
+  <meta property="og:image:height" content="425">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Building Sierrafy: An Open Identity Verification SDK for Sierra Leone">
+  <meta name="twitter:description" content="Sierra Leone has achieved 93% national civial registration and ID issuance coverage. That's a major achievement by NCRA.">
+  <meta name="twitter:image" content="https://www.umarubiango.com/assets/images/notes/laptop-on-a-desk.jpg">
+  <link rel="canonical" href="https://www.umarubiango.com/notes/introducing-sierrafy/">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <title>Building Sierrafy: An Open Identity Verification SDK for Sierra Leone — Umaru Biango</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="page-wrapper">
+      <a href="../../index.html" class="nav-logo">ub://</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="../../index.html">home</a></li>
+        <li><a href="../../notes.html" aria-current="page">notes</a></li>
+        <li><a href="../../how-i-think.html">how i think</a></li>
+        <li><a href="../../now.html">now</a></li>
+        <li><a href="../../contact.html">contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main id="main" tabindex="-1">
+    <div class="page-wrapper">
+      <a class="note-view__back" aria-label="Back to notes list" href="../../notes.html">notes</a>
+      <article>
+        <header class="note-view__header">
+          <h1 class="note-view__title">Building Sierrafy: An Open Identity Verification SDK for Sierra Leone</h1>
+          <div class="note-view__meta">
+            <span>2026-06-21</span>
+          </div>
+        </header>
+        <figure class="note-featured-image"><img src="/assets/images/notes/laptop-on-a-desk.jpg" alt="Cover image for Building Sierrafy: An Open Identity Verification SDK for Sierra Leone" width="700" height="425" loading="lazy" decoding="async"></figure>
+        <div class="note-body"><p>Sierra Leone has achieved 93% NIN registration coverage.</p>
+<p>Not a gap in awareness. A gap in infrastructure.</p>
+<p>Every bank account. Every SIM card. Every company registration. Every school enrolment. The National Identification Number sits at the centre of all of it — legally required and held by millions of Sierra Leoneans.</p>
+<p>The identity infrastructure exists.</p>
+<p>The developer infrastructure does not.</p>
+<p>For a developer building a Sierra Leonean app today, there is no widely available open-source toolkit for identity verification.</p>
+<p>NCRA has built something real. Millions of Sierra Leoneans are registered. But the developer layer — the API, the SDK, the integration point that allows a local startup or government portal to confidently validate identity documents and automate onboarding — remains largely unavailable to the builders who need it most.</p>
+<p>As a result, many Sierra Leonean applications make the same compromise: they accept a NIN as plain text, trust the user, and move on.</p>
+<p>That is the problem Sierrafy is built to solve.</p>
+<p>Sierrafy is an open-source identity verification SDK built specifically for Sierra Leone. It provides a clean REST API and multi-language SDKs that give developers a programmatic way to validate, authenticate, and verify identity documents associated with a user&#39;s NIN.</p>
+<p>It is self-hostable, offline-capable, MIT licensed, and free to use.</p>
+<h2>Phase 1</h2>
+<p>Phase 1 ships with five verification layers:</p>
+<ul>
+<li><strong>NIN format validation</strong> — structural validation before a single image is uploaded</li>
+<li><strong>Document OCR</strong> — extracts and cross-checks data from the National eID Card and Passport</li>
+<li><strong>Face matching</strong> — confirms the person presenting the document matches the document photo</li>
+<li><strong>Fraud detection</strong> — flags signs of document tampering, manipulation, and screen recaptures</li>
+<li><strong>NFC chip authentication</strong> — reads the cryptographic chip embedded in the National eID Card and verifies its authenticity</li>
+</ul>
+<p>The final layer is particularly important because it shifts verification from visual inspection to cryptographic proof.</p>
+<p>The chip inside the Sierra Leone National eID Card carries a digital signature issued by NCRA. Sierrafy reads that signature and verifies it cryptographically, helping confirm that the card data is authentic and has not been altered.</p>
+<p>It represents the highest level of confidence available without a live database lookup and builds directly on the identity infrastructure that already exists today.</p>
+<h2>Phase 2</h2>
+<p>Phase 2 is a formal partnership with NCRA for live NIN database verification and lookup.</p>
+<p>That is the long-term destination.</p>
+<p>Phase 1 establishes the developer foundation needed before that destination becomes practical. The goal is not to replace Sierra Leone&#39;s identity infrastructure, but to make it easier for developers to build on top of it.</p>
+<h2>Building in Public</h2>
+<p>Over the next several weeks, I will be building Sierrafy in public.</p>
+<p>I&#39;ll be sharing the architecture, technical decisions, implementation details, lessons learned, mistakes made, and milestones achieved as each component ships.</p>
+<p>If you are a Sierra Leonean developer, fintech founder, startup operator, government contractor, or anyone building products that need to know who their users are, this project is for you.</p>
+<h2>Contributing</h2>
+<p>Sierrafy is open source, and contributions are welcome.</p>
+<p>If you&#39;re a developer interested in contributing, check out the repository:</p>
+<p>→ <a href="https://github.com/SUBiango/sierrafy">sierrafy repo</a></p>
+<p>Before opening a pull request, please review the open questions listed in the <code>CONTRIBUTING.md</code> document.</p>
+<p>Several implementation details are still being researched and verified, including:</p>
+<ul>
+<li>NIN format specifications</li>
+<li>National eID Card zone-map coordinates</li>
+<li>CSCA (Country Signing Certificate Authority) certificates and trust chain information</li>
+<li>Other Sierra Leone-specific identity document standards</li>
+</ul>
+<p>If you have authoritative information on any of these topics, that is a valuable contribution in itself.</p>
+<p>Building identity infrastructure is not only about writing code. Accurate specifications, documentation, sample data, testing, and validation are equally important.</p>
+<p>Every contribution helps move the project forward.</p>
+<p>→ <a href="https://sierrafy.dev">sierrafy.dev</a></p>
+</div>
+        <div class="newsletter-form">
+          <div class="terminal-block" role="region" aria-label="Newsletter signup">
+            <span class="terminal-line"><span class="t-prompt" aria-hidden="true">&gt;</span> <span class="t-cmd">want_more</span></span>
+            <span class="t-out">No growth hacks. Just hard-won lessons worth stealing.</span>
+          </div>
+          <form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>
+            <input type="hidden" name="form-name" value="newsletter">
+            <input type="hidden" name="form-type" value="newsletter">
+            <input type="hidden" name="note_slug" value="introducing-sierrafy">
+            <div class="form-row">
+              <label for="newsletter-email" class="u-sr-only">Email address</label>
+              <input type="email" id="newsletter-email" name="email" placeholder="enter_email" required autocomplete="email">
+              <button type="submit" class="form-submit-inline">subscribe</button>
+            </div>
+          </form>
+        </div>
+        <div class="note-footer-tags"><span class="note-view__tags"><a href="../../notes.html?tag=development">development</a><a href="../../notes.html?tag=open-source">open-source</a><a href="../../notes.html?tag=infrastracture">infrastracture</a><a href="../../notes.html?tag=NIN">NIN</a></span></div>
+        <div class="note-share">
+          <span class="note-share__label">share</span>
+          <a href="https://x.com/intent/tweet?url=https%3A%2F%2Fwww.umarubiango.com%2Fnotes%2Fintroducing-sierrafy%2F&amp;text=Building%20Sierrafy%3A%20An%20Open%20Identity%20Verification%20SDK%20for%20Sierra%20Leone" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.umarubiango.com%2Fnotes%2Fintroducing-sierrafy%2F" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.25h2.75L16.75 9h-3.25V6.75c0-1.031.281-1.75 1.75-1.75h1.75V2.125A23.74 23.74 0 0 0 14.438 2C11.719 2 9.75 3.656 9.75 6.688V9H7v3.75h2.75V21h3.75Z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.umarubiango.com%2Fnotes%2Fintroducing-sierrafy%2F" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.448 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+        <nav class="note-post-nav" aria-label="Post navigation">
+          <a class="note-post-nav__prev" href="../the-bottleneck/"><span class="note-post-nav__label">← previous post</span><span class="note-post-nav__title">The Bottleneck</span></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="page-wrapper">
+      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+      <div class="footer-social" aria-label="Social links" role="group">
+        <a href="https://github.com/SUBiango" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.648.5.5 5.648.5 12c0 5.084 3.292 9.395 7.863 10.916.575.106.787-.25.787-.556 0-.275-.012-1.188-.018-2.154-3.2.694-3.875-1.356-3.875-1.356-.525-1.337-1.281-1.694-1.281-1.694-1.05-.719.081-.706.081-.706 1.163.081 1.775 1.194 1.775 1.194 1.031 1.769 2.706 1.256 3.366.962.106-.75.406-1.256.737-1.544-2.556-.287-5.244-1.275-5.244-5.675 0-1.256.45-2.281 1.188-3.087-.119-.294-.519-1.475.112-3.075 0 0 .969-.313 3.175 1.181a11.067 11.067 0 0 1 5.775 0c2.206-1.494 3.175-1.181 3.175-1.181.631 1.6.231 2.781.112 3.075.738.806 1.188 1.831 1.188 3.087 0 4.412-2.694 5.381-5.263 5.662.419.363.794 1.075.794 2.169 0 1.569-.013 2.831-.013 3.213 0 .306.206.669.794.556A11.508 11.508 0 0 0 23.5 12c0-6.352-5.148-11.5-11.5-11.5Z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.25h2.75L16.75 9h-3.25V6.75c0-1.031.281-1.75 1.75-1.75h1.75V2.125A23.74 23.74 0 0 0 14.438 2C11.719 2 9.75 3.656 9.75 6.688V9H7v3.75h2.75V21h3.75Z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/umarubiango/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.756 5.756 0 0 1 22 7.75v8.5A5.756 5.756 0 0 1 16.25 22h-8.5A5.756 5.756 0 0 1 2 16.25v-8.5A5.756 5.756 0 0 1 7.75 2Zm8.5 1.75h-8.5A4.004 4.004 0 0 0 3.75 7.75v8.5a4.004 4.004 0 0 0 4 4h8.5a4.004 4.004 0 0 0 4-4v-8.5a4.004 4.004 0 0 0-4-4Zm-4.25 2.5A5.75 5.75 0 1 1 6.25 12 5.756 5.756 0 0 1 12 6.25Zm0 1.75A4 4 0 1 0 16 12a4.004 4.004 0 0 0-4-4Zm6-2.125a1.125 1.125 0 1 1-1.125 1.125A1.125 1.125 0 0 1 18 5.875Z"/></svg>
+        </a>
+      </div>
+      <p>&copy; 2026 Umaru S. Biango</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/combine/npm/prismjs@1.29.0/prism.min.js,npm/prismjs@1.29.0/components/prism-javascript.min.js,npm/prismjs@1.29.0/components/prism-python.min.js,npm/prismjs@1.29.0/components/prism-markup.min.js,npm/prismjs@1.29.0/components/prism-css.min.js,npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+  <script src="../../assets/js/terminal.js"></script>
+  <script src="../../assets/js/note-page.js"></script>
+</body>
+</html>

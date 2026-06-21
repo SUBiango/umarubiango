@@ -1,14 +1,37 @@
 [
   {
-    "slug": "why-no-one-will-adopt-your-tech-product-in-sierra-leone",
-    "title": "Why No One Will Adopt Your Tech Product in Sierra Leone",
-    "date": "2026-02-19",
-    "excerpt": "Technology is only one slice of the adoption pie in Sierra Leone."
+    "slug": "introducing-sierrafy",
+    "title": "Building Sierrafy: An Open Identity Verification SDK for Sierra Leone",
+    "date": "2026-06-21",
+    "excerpt": "Sierra Leone has achieved 93% national civial registration and ID issuance coverage. That's a major achievement by NCRA.",
+    "tags": [
+      "development",
+      "open-source",
+      "infrastracture",
+      "NIN"
+    ]
   },
   {
     "slug": "the-bottleneck",
     "title": "The Bottleneck",
     "date": "2026-03-10",
-    "excerpt": "For the past two months I’ve been working on an e-commerce marketplace product."
+    "excerpt": "For the past two months I’ve been working on an e-commerce marketplace product.",
+    "tags": [
+      "development",
+      "product",
+      "strategy"
+    ]
+  },
+  {
+    "slug": "why-no-one-will-adopt-your-tech-product-in-sierra-leone",
+    "title": "Why No One Will Adopt Your Tech Product in Sierra Leone",
+    "date": "2026-02-19",
+    "excerpt": "Technology is only one slice of the adoption pie in Sierra Leone.",
+    "tags": [
+      "adoption",
+      "sierra-leone",
+      "product",
+      "strategy"
+    ]
   }
 ]

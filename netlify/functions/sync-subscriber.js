@@ -78,11 +78,11 @@ function subscribeToConvertKit(apiKey, formId, email) {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(payload),
       },
+      timeout: REQUEST_TIMEOUT_MS,
     }, function(res) {
       var data = '';
       res.on('data', function(chunk) { data += chunk; });
       res.on('end', function() {
-        clearTimeout(timeoutId);
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve();
           return;
@@ -91,12 +91,11 @@ function subscribeToConvertKit(apiKey, formId, email) {
       });
     });
 
-    var timeoutId = setTimeout(function() {
+    req.on('timeout', function() {
       req.destroy(new Error('Request timed out after ' + REQUEST_TIMEOUT_MS + 'ms'));
-    }, REQUEST_TIMEOUT_MS);
+    });
 
     req.on('error', function(err) {
-      clearTimeout(timeoutId);
       reject(err);
     });
     req.write(payload);

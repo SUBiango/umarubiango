@@ -8,6 +8,7 @@ var marked = require('marked');
 
 var ROOT = path.join(__dirname, '..');
 var NOTES_DIR = path.join(ROOT, 'notes');
+var NOTES_INDEX_PATH = path.join(ROOT, 'data', 'notes-index.json');
 var SITE_URL = 'https://www.umarubiango.com';
 
 var markdownFiles = fs.readdirSync(NOTES_DIR)
@@ -105,7 +106,7 @@ noteEntries.forEach(function(entry) {
     '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     '  <meta name="description" content="' + escapeHtml(excerpt) + '">\n' +
     '  <meta name="author" content="Umaru Biango">\n' +
-    '  <meta property="og:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
+    '  <meta property="og:title" content="' + escapeHtml(title) + '">\n' +
     '  <meta property="og:description" content="' + escapeHtml(excerpt) + '">\n' +
     '  <meta property="og:type" content="article">\n' +
     '  <meta property="og:url" content="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
@@ -113,14 +114,13 @@ noteEntries.forEach(function(entry) {
     '  <meta property="og:locale" content="en_US">\n' +
     articleMetaHtml +
     (socialImageUrl ? ('  <meta property="og:image" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
-    (socialImageUrl ? ('  <meta property="og:image:url" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
     (socialImageUrl ? ('  <meta property="og:image:secure_url" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
     (socialImageUrl ? ('  <meta property="og:image:alt" content="' + escapeHtml(featuredImageAlt) + '">\n') : '') +
     (socialImageUrl && featuredImageWidth  ? ('  <meta property="og:image:width" content="' + featuredImageWidth + '">\n') : '') +
     (socialImageUrl && featuredImageHeight ? ('  <meta property="og:image:height" content="' + featuredImageHeight + '">\n') : '') +
     (socialImageType ? ('  <meta property="og:image:type" content="' + socialImageType + '">\n') : '') +
     '  <meta name="twitter:card" content="' + (featuredImageUrl ? 'summary_large_image' : 'summary') + '">\n' +
-    '  <meta name="twitter:title" content="' + escapeHtml(title) + ' — Umaru Biango">\n' +
+    '  <meta name="twitter:title" content="' + escapeHtml(title) + '">\n' +
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
     (socialImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
     '  <link rel="canonical" href="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
@@ -192,7 +192,25 @@ noteEntries.forEach(function(entry) {
   fs.writeFileSync(path.join(outputDir, 'index.html'), pageHtml);
 });
 
+writeNotesIndex(sortedNotes);
+
 console.log('[generate:notes] Generated ' + markdownFiles.length + ' note page(s).');
+console.log('[generate:notes] Wrote ' + path.relative(ROOT, NOTES_INDEX_PATH));
+
+function writeNotesIndex(sorted) {
+  var entries = sorted.map(function(entry) {
+    var fm = entry.fm;
+    return {
+      slug: entry.slug,
+      title: entry.title,
+      date: formatDate(fm.date),
+      excerpt: fm.excerpt || toExcerpt(entry.parsed.content),
+      tags: Array.isArray(fm.tags) ? fm.tags : [],
+    };
+  });
+  fs.mkdirSync(path.dirname(NOTES_INDEX_PATH), { recursive: true });
+  fs.writeFileSync(NOTES_INDEX_PATH, JSON.stringify(entries, null, 2) + '\n');
+}
 
 function toExcerpt(markdown) {
   var text = String(markdown || '')

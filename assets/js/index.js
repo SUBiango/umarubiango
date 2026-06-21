@@ -55,7 +55,7 @@ function runHero() {
       var lastLine = document.createElement('span');
       lastLine.className = 'terminal-line';
       lastLine.innerHTML =
-        '<span class="t-prompt" aria-hidden="true">&gt;</span>'; // Removed trailing space
+        '<span class="t-prompt" aria-hidden="true">&gt;</span>';
       terminalCursor(lastLine);
       el.appendChild(lastLine);
       

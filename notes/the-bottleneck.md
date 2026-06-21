@@ -9,11 +9,11 @@ featured_image_alt: "Cover image for The Bottleneck"
 featured_image_width: 1536
 featured_image_height: 1024
 send: true
-broadcast: falses
+broadcast: false
 sent: false
 ---
 
-# The Bottlenect
+# The Bottleneck
 
 For the past two months I’ve been working on an e-commerce marketplace product. Two hours every weekday and at least five hours on weekends. And I’m still not done with V1.
 

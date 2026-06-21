@@ -33,14 +33,14 @@ try {
   process.exit(1);
 }
 
-var API_KEY    = process.env.CONVERTKIT_API_KEY;
+var API_SECRET = process.env.CONVERTKIT_API_SECRET || process.env.CONVERTKIT_API_KEY;
 var BASE_URL   = process.env.CONVERTKIT_BASE_URL || 'https://www.umarubiango.com';
 var NOTES_DIR  = path.join(__dirname, '..', 'notes');
 var DRY_RUN    = process.env.DRY_RUN === '1';
 var CK_API     = 'https://api.convertkit.com/v3';
 
-if (!API_KEY) {
-  console.error('[broadcast] Missing CONVERTKIT_API_KEY in .env');
+if (!API_SECRET) {
+  console.error('[broadcast] Missing CONVERTKIT_API_SECRET in .env');
   process.exit(1);
 }
 
@@ -123,7 +123,7 @@ function sendNext(queue, idx) {
   var body = buildEmailBody(note);
 
   var payload = JSON.stringify({
-    api_secret: API_KEY,
+    api_secret: API_SECRET,
     subject:    note.title,
     content:    body,
     public:     false,

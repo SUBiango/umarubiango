@@ -1,7 +1,7 @@
 /**
- * notes.js — Notes page
- * Handles list view, full note rendering (Markdown via Marked.js),
- * hash-based routing, and newsletter form injection.
+ * notes.js — Notes index page
+ * Fetches data/notes-index.json, renders the filterable list, and
+ * redirects legacy hash URLs (#slug) to the generated static page at notes/<slug>/.
  */
 
 'use strict';
@@ -9,23 +9,15 @@
 var NOTES_INDEX = 'data/notes-index.json';
 var NOTES = [];
 var SELECTED_TAG = '';
-var NOTES_PAGE_URL = new URL('/notes.html', window.location.origin).toString();
-var DEFAULT_NOTES_TITLE = 'Notes — Umaru Biango';
-var DEFAULT_NOTES_DESCRIPTION = 'Field notes from building in Sierra Leone — what breaks, what survives, what scales.';
-var TAG_ENRICH_CONCURRENCY = 4;
 
 document.addEventListener('DOMContentLoaded', function() {
   initNav();
   SELECTED_TAG = getTagFromUrl();
   loadNotesList();
 
-  // Handle browser back/forward
   window.addEventListener('hashchange', handleHash);
 });
 
-/* ============================================================
-   LIST VIEW
-   ============================================================ */
 function loadNotesList() {
   var list = document.getElementById('notes-list');
   if (!list) return;
@@ -36,9 +28,6 @@ function loadNotesList() {
       return res.json();
     })
     .then(function(notes) {
-      return enrichNotesWithLimit(notes, TAG_ENRICH_CONCURRENCY);
-    })
-    .then(function(notes) {
       notes.sort(function(a, b) {
         return new Date(b.date) - new Date(a.date);
       });
@@ -46,53 +35,11 @@ function loadNotesList() {
       NOTES = notes;
       renderTagFilters();
       renderNotesList();
-
-      // Check if we need to open a note from URL hash on load
       handleHash();
     })
     .catch(function() {
       list.innerHTML = '<li><span class="state-error u-mono">Could not load notes. Try again later.</span></li>';
     });
-}
-
-function enrichNoteWithTags(note) {
-  if (note.tags && note.tags.length) return Promise.resolve(note);
-
-  return fetch('notes/' + note.slug + '.md')
-    .then(function(res) {
-      if (!res.ok) throw new Error();
-      return res.text();
-    })
-    .then(function(raw) {
-      var parsed = parseFrontmatter(raw);
-      note.tags = Array.isArray(parsed.frontmatter.tags) ? parsed.frontmatter.tags : [];
-      return note;
-    })
-    .catch(function() {
-      note.tags = [];
-      return note;
-    });
-}
-
-function enrichNotesWithLimit(notes, limit) {
-  var enriched = [];
-  var index = 0;
-  var size = Math.max(1, limit || 1);
-
-  function nextBatch() {
-    if (index >= notes.length) return Promise.resolve(enriched);
-
-    var batch = notes.slice(index, index + size);
-    index += size;
-
-    return Promise.all(batch.map(enrichNoteWithTags))
-      .then(function(items) {
-        Array.prototype.push.apply(enriched, items);
-        return nextBatch();
-      });
-  }
-
-  return nextBatch();
 }
 
 function renderTagFilters() {
@@ -114,7 +61,6 @@ function renderTagFilters() {
   var allBtn = createTagButton('all', !SELECTED_TAG, function() {
     SELECTED_TAG = '';
     setTagInUrl('');
-    window.location.hash = '';
     renderTagFilters();
     renderNotesList();
   });
@@ -126,7 +72,6 @@ function renderTagFilters() {
       setTagInUrl(tag);
       renderTagFilters();
       renderNotesList();
-      window.location.hash = '';
     });
     filters.appendChild(btn);
   });
@@ -183,376 +128,24 @@ function renderNotesList() {
   });
 }
 
-/* ============================================================
-   HASH ROUTING
-   ============================================================ */
+/* Legacy: redirect notes.html#slug → notes/slug/ */
 function handleHash() {
-  var hash = window.location.hash.slice(1); // strip #
-  if (hash) {
-    var slug = hash;
-    try {
-      slug = decodeURIComponent(hash);
-    } catch (e) {
-      slug = hash;
-    }
-    window.location.replace(getCanonicalNotePath(slug));
-  } else {
-    showList();
+  var hash = window.location.hash.slice(1);
+  if (!hash) return;
+
+  var slug = hash;
+  try {
+    slug = decodeURIComponent(hash);
+  } catch (e) {
+    slug = hash;
   }
+  window.location.replace(getCanonicalNotePath(slug));
 }
 
-function openNote(slug) {
-  var noteFile = 'notes/' + slug + '.md';
-
-  fetch(noteFile)
-    .then(function(res) {
-      if (!res.ok) throw new Error('Note not found');
-      return res.text();
-    })
-    .then(function(raw) {
-      var parsed = parseFrontmatter(raw);
-      renderNote(slug, parsed.frontmatter, parsed.body);
-      showNoteView();
-      window.scrollTo(0, 0);
-    })
-    .catch(function() {
-      showList();
-      window.location.hash = '';
-    });
-}
-
-/* ============================================================
-   FRONTMATTER PARSER
-   Strips YAML frontmatter from Markdown, returns { frontmatter, body }
-   ============================================================ */
-function parseFrontmatter(raw) {
-  var frontmatter = {};
-  var body = raw;
-
-  var match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
-  if (match) {
-    body = match[2];
-    var lines = match[1].split('\n');
-    lines.forEach(function(line) {
-      var colonIdx = line.indexOf(':');
-      if (colonIdx === -1) return;
-      var key = line.slice(0, colonIdx).trim();
-      var value = line.slice(colonIdx + 1).trim()
-        .replace(/^"(.*)"$/, '$1')  // strip quotes
-        .replace(/^'(.*)'$/, '$1');
-
-      // Handle boolean-like values
-      if (value === 'true')  { frontmatter[key] = true;  return; }
-      if (value === 'false') { frontmatter[key] = false; return; }
-
-      // Handle arrays like [tag1, tag2]
-      if (value.startsWith('[') && value.endsWith(']')) {
-        frontmatter[key] = value.slice(1, -1).split(',').map(function(t) {
-          return t.trim().replace(/^["']|["']$/g, '');
-        });
-        return;
-      }
-
-      frontmatter[key] = value;
-    });
-  }
-
-  return { frontmatter: frontmatter, body: body };
-}
-
-/* ============================================================
-   RENDER NOTE
-   ============================================================ */
-function renderNote(slug, fm, body) {
-  var article = document.getElementById('notes-article');
-  if (!article) return;
-
-  article.innerHTML = '';
-
-  // Header
-  var header = document.createElement('header');
-  header.className = 'note-view__header';
-
-  var titleEl = document.createElement('h1');
-  titleEl.className = 'note-view__title';
-  titleEl.textContent = fm.title || slug;
-  header.appendChild(titleEl);
-
-  var meta = document.createElement('div');
-  meta.className = 'note-view__meta';
-
-  if (fm.date) {
-    var dateEl = document.createElement('span');
-    dateEl.textContent = formatDate(fm.date);
-    meta.appendChild(dateEl);
-  }
-
-  header.appendChild(meta);
-  article.appendChild(header);
-
-  // Collect tags for footer (rendered after newsletter)
-  var footerTags = (fm.tags && fm.tags.length) ? fm.tags : null;
-
-  // Optional featured image (from note frontmatter)
-  if (fm.featured_image) {
-    var figure = document.createElement('figure');
-    figure.className = 'note-featured-image';
-
-    var image = document.createElement('img');
-    image.src = fm.featured_image;
-    image.alt = fm.featured_image_alt || (fm.title || slug);
-    image.decoding = 'async';
-
-    figure.appendChild(image);
-    article.appendChild(figure);
-  }
-
-  // Markdown body
-  var bodyEl = document.createElement('div');
-  bodyEl.className = 'note-body';
-
-  if (window.marked) {
-    marked.setOptions({ breaks: false, gfm: true });
-    bodyEl.innerHTML = marked.parse(body);
-  } else {
-    // Fallback: plain text
-    var pre = document.createElement('pre');
-    pre.textContent = body;
-    bodyEl.appendChild(pre);
-  }
-
-  // Lazy-load images
-  bodyEl.querySelectorAll('img').forEach(function(img) {
-    img.setAttribute('loading', 'lazy');
-    img.style.maxWidth = '100%';
-  });
-
-  article.appendChild(bodyEl);
-
-  // Read time
-  if (typeof insertReadTime === 'function') {
-    insertReadTime(bodyEl, meta);
-  }
-
-  var postNav = renderPostNav(slug);
-  if (postNav) article.appendChild(postNav);
-
-  // Syntax highlighting
-  if (window.Prism) Prism.highlightAllUnder(bodyEl);
-
-  // Newsletter form injection (shown by default unless explicitly disabled)
-  if (fm.send !== false) {
-    article.appendChild(renderNewsletterForm(slug));
-  }
-
-  // Footer tags (just before share)
-  if (footerTags) {
-    var footerTagsEl = document.createElement('div');
-    footerTagsEl.className = 'note-footer-tags';
-    var tagsSpan = document.createElement('span');
-    tagsSpan.className = 'note-view__tags';
-    footerTags.forEach(function(tag) {
-      var tagEl = document.createElement('a');
-      tagEl.href = NOTES_PAGE_URL + '?tag=' + encodeURIComponent(tag);
-      tagEl.textContent = tag;
-      tagsSpan.appendChild(tagEl);
-    });
-    footerTagsEl.appendChild(tagsSpan);
-    article.appendChild(footerTagsEl);
-  }
-
-  // Update page title
-  document.title = (fm.title || slug) + ' — Umaru Biango';
-  updateSocialMeta({
-    title: document.title,
-    description: fm.excerpt || getTextExcerpt(body),
-    url: getCanonicalNoteUrl(slug),
-  });
-}
-
-function renderPostNav(currentSlug) {
-  var index = NOTES.findIndex(function(note) { return note.slug === currentSlug; });
-  if (index === -1) return null;
-
-  var newer = index > 0 ? NOTES[index - 1] : null;
-  var older = index < NOTES.length - 1 ? NOTES[index + 1] : null;
-  if (!older && !newer) return null;
-
-  var nav = document.createElement('nav');
-  nav.className = 'note-post-nav';
-  nav.setAttribute('aria-label', 'Post navigation');
-
-  if (older) {
-    var prev = document.createElement('a');
-    prev.className = 'note-post-nav__prev';
-    prev.href = getCanonicalNotePath(older.slug);
-    prev.innerHTML =
-      '<span class="note-post-nav__label">← previous post</span>' +
-      '<span class="note-post-nav__title">' + escapeHtml(older.title || older.slug) + '</span>';
-    nav.appendChild(prev);
-  }
-
-  if (newer) {
-    var next = document.createElement('a');
-    next.className = 'note-post-nav__next';
-    next.href = getCanonicalNotePath(newer.slug);
-    next.innerHTML =
-      '<span class="note-post-nav__label">next post →</span>' +
-      '<span class="note-post-nav__title">' + escapeHtml(newer.title || newer.slug) + '</span>';
-    nav.appendChild(next);
-  }
-
-  return nav;
-}
-
-/* ============================================================
-   NEWSLETTER FORM
-   ============================================================ */
-function renderNewsletterForm(slug) {
-  var wrap = document.createElement('div');
-  wrap.className = 'newsletter-form';
-  wrap.id = 'newsletter-wrap';
-
-  wrap.innerHTML =
-    '<div class="terminal-block" role="region" aria-label="Newsletter signup">' +
-      '<span class="terminal-line">' +
-        '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
-        ' <span class="t-cmd">want_more</span>' +
-      '</span>' +
-      '<span class="t-out">No growth hacks. Just hard-won lessons worth stealing.</span>' +
-    '</div>' +
-    '<form name="newsletter" method="POST" data-netlify="true" id="newsletter-form" novalidate>' +
-      '<input type="hidden" name="form-name" value="newsletter">' +
-      '<input type="hidden" name="form-type" value="newsletter">' +
-      '<input type="hidden" name="note_slug" value="' + escapeHtml(slug) + '">' +
-      '<div class="form-row">' +
-        '<label for="newsletter-email" class="u-sr-only">Email address</label>' +
-        '<input type="email" id="newsletter-email" name="email" placeholder="enter_email" required autocomplete="email">' +
-        '<button type="submit" class="form-submit-inline">subscribe</button>' +
-      '</div>' +
-    '</form>' +
-    '<div id="newsletter-success" aria-live="polite" style="display:none;">' +
-      '<div class="terminal-block" role="region" aria-label="Subscription confirmed">' +
-        '<span class="terminal-line">' +
-          '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
-          ' <span class="t-cmd">subscribed</span>' +
-        '</span>' +
-        '<span class="t-out">you\'re in. I\'ll write when it\'s worth it.</span>' +
-      '</div>' +
-    '</div>' +
-    '<div id="newsletter-error" aria-live="polite" style="display:none;">' +
-      '<div class="terminal-block" role="region" aria-label="Subscription error">' +
-        '<span class="terminal-line">' +
-          '<span class="t-prompt" aria-hidden="true">&gt;</span>' +
-          ' <span class="t-cmd">subscribe_failed</span>' +
-        '</span>' +
-        '<span class="t-out newsletter-error-message">Could not subscribe. Please try again.</span>' +
-      '</div>' +
-    '</div>';
-
-  // Wire up form submission
-  setTimeout(function() {
-    var form = document.getElementById('newsletter-form');
-    var successEl = document.getElementById('newsletter-success');
-    var errorEl = document.getElementById('newsletter-error');
-    if (!form) return;
-
-    function showError(message) {
-      if (!errorEl) return;
-      var messageEl = errorEl.querySelector('.newsletter-error-message');
-      if (messageEl) messageEl.textContent = message;
-      errorEl.style.display = 'block';
-    }
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (errorEl) errorEl.style.display = 'none';
-      var data = new FormData(form);
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(data).toString(),
-      })
-        .then(function(res) {
-          if (res.ok) {
-            form.style.display = 'none';
-            if (successEl) {
-              successEl.style.display = 'block';
-              successEl.focus();
-            }
-          } else {
-            if (res.status === 404) {
-              showError('Subscription endpoint not found. Deploy on Netlify with Forms enabled.');
-              return;
-            }
-            showError('Could not subscribe. Please try again.');
-          }
-        })
-        .catch(function() {
-          showError('Could not subscribe. Please try again.');
-        });
-    });
-  }, 0);
-
-  return wrap;
-}
-
-/* ============================================================
-   VIEW SWITCHING
-   ============================================================ */
-function showNoteView() {
-  var listView = document.getElementById('notes-list-view');
-  var noteView = document.getElementById('notes-note-view');
-  if (listView) listView.classList.add('is-hidden');
-  if (noteView) noteView.classList.add('is-visible');
-
-  // Wire back button
-  var backBtn = document.getElementById('notes-back-btn');
-  if (backBtn) {
-    backBtn.onclick = function(e) {
-      e.preventDefault();
-      
-      // Use browser history if we likely came from within the site
-      var cameFromSite = false;
-      try {
-        if (document.referrer) {
-          var refUrl = new URL(document.referrer);
-          cameFromSite = refUrl.hostname === window.location.hostname;
-        }
-      } catch (err) {
-        // Invalid referrer URL or blocked
-      }
-
-      if (window.history.length > 1 && cameFromSite) {
-        window.history.back();
-      } else {
-        // Force return to list view (clear hash triggers handleHash -> showList)
-        window.location.hash = '';
-      }
-    };
-  }
-}
-
-function showList() {
-  var listView = document.getElementById('notes-list-view');
-  var noteView = document.getElementById('notes-note-view');
-  if (listView) listView.classList.remove('is-hidden');
-  if (noteView) noteView.classList.remove('is-visible');
-  document.title = DEFAULT_NOTES_TITLE;
-  updateSocialMeta({
-    title: DEFAULT_NOTES_TITLE,
-    description: DEFAULT_NOTES_DESCRIPTION,
-    url: NOTES_PAGE_URL,
-  });
-}
-
-/* ============================================================
-   HELPERS
-   ============================================================ */
 function formatDate(dateStr) {
   if (!dateStr) return '';
   var d = new Date(dateStr + 'T00:00:00');
-  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+  return d.toISOString().slice(0, 10);
 }
 
 function getTagFromUrl() {
@@ -573,53 +166,6 @@ function setTagInUrl(tag) {
   window.history.replaceState(null, '', next);
 }
 
-function updateSocialMeta(meta) {
-  setMeta('meta[property="og:title"]', meta.title);
-  setMeta('meta[property="og:description"]', meta.description);
-  setMeta('meta[property="og:url"]', meta.url);
-  setMeta('meta[name="twitter:title"]', meta.title);
-  setMeta('meta[name="twitter:description"]', meta.description);
-}
-
-function setMeta(selector, content) {
-  var el = document.querySelector(selector);
-  if (el) el.setAttribute('content', content);
-}
-
 function getCanonicalNotePath(slug) {
   return 'notes/' + encodeURIComponent(slug) + '/';
-}
-
-function getCanonicalNoteUrl(slug) {
-  return new URL('/notes/' + encodeURIComponent(slug) + '/', window.location.origin).toString();
-}
-
-function getTextExcerpt(markdown) {
-  if (!markdown) return DEFAULT_NOTES_DESCRIPTION;
-
-  var text = markdown
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/[#*_>`\[\]\(\)-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  if (!text) return DEFAULT_NOTES_DESCRIPTION;
-
-  var limit = 160;
-  if (text.length <= limit) return text;
-
-  var slice = text.slice(0, limit);
-  var lastSpace = slice.lastIndexOf(' ');
-  var fragment = lastSpace > 0 ? slice.slice(0, lastSpace) : slice;
-  fragment = fragment.replace(/[\s\.,;:!?-]+$/g, '');
-
-  return (fragment || slice).trim() + '…';
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
