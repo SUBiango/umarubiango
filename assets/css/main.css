@@ -33,6 +33,30 @@
   src: url('../fonts/jetbrains-mono-latin-700-normal.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'IBM Plex Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-serif-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Serif';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-serif-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-serif-latin-400-italic.woff2') format('woff2');
+}
+
 /* ============================================================
    DESIGN TOKENS
    ============================================================ */
