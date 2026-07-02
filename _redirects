@@ -1,2 +1,8 @@
 # Domain-level canonical redirects are managed in Netlify site settings
 # to avoid conflicts/loops with primary domain configuration.
+
+# Do not serve internal planning docs or raw function source that live in the
+# publish root. These paths are blocked at the edge (robots.txt only guides
+# crawlers; this actually prevents direct access).
+/docs/*     /404.html   404
+/netlify/*  /404.html   404

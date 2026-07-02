@@ -6,7 +6,19 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self'; img-src 'self' https: data:; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self'; img-src 'self' https: data:; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests;"
+    # Force HTTPS for 2 years, include subdomains, and allow HSTS preload listing
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # Block MIME-type sniffing
+    X-Content-Type-Options = "nosniff"
+    # Legacy clickjacking protection (modern browsers honor CSP frame-ancestors)
+    X-Frame-Options = "DENY"
+    # Send only the origin on cross-origin requests; nothing on downgrade
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Disable powerful browser features this static site never uses
+    Permissions-Policy = "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+    # Isolate this browsing context from cross-origin openers
+    Cross-Origin-Opener-Policy = "same-origin"
 
 # Cache JS and CSS: always revalidate via ETag (no immutable — no content hashing)
 [[headers]]
