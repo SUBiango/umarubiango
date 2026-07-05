@@ -4,5 +4,7 @@
 # Do not serve internal planning docs or raw function source that live in the
 # publish root. These paths are blocked at the edge (robots.txt only guides
 # crawlers; this actually prevents direct access).
-/docs/*     /404.html   404
-/netlify/*  /404.html   404
+# The trailing "!" forces the rule even though matching files exist in the
+# publish dir — without it Netlify serves the file and skips the redirect.
+/docs/*     /404.html   404!
+/netlify/*  /404.html   404!
