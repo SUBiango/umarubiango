@@ -139,7 +139,7 @@ noteEntries.forEach(function(entry) {
     '      <ul class="nav-links" id="nav-links" role="list">\n' +
     '        <li><a href="../../index.html">home</a></li>\n' +
     '        <li><a href="../../notes.html" aria-current="page">notes</a></li>\n' +
-    '        <li><a href="../../how-i-think.html">how i think</a></li>\n' +
+    '        <li><a href="../../how-i-think.html">philosophy</a></li>\n' +
     '        <li><a href="../../now.html">now</a></li>\n' +
     '        <li><a href="../../contact.html">contact</a></li>\n' +
     '      </ul>\n' +

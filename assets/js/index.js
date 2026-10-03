@@ -30,12 +30,12 @@ function runHero() {
   
   var lines = [
     {
-      cmd: 'whoami',
-      output: 'Umaru S. Biango',
+      cmd: 'who am i',
+      output: 'Umaru Biango',
     },
     {
       cmd: 'role',
-      output: 'Developer. Product Builder.',
+      output: 'Software Developer | Product Builder.',
     },
     {
       cmd: 'thesis',
