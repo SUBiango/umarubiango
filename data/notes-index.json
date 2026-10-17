@@ -1,5 +1,15 @@
 [
   {
+    "slug": "the-ai-assistant-i-want-to-build",
+    "title": "The AI Assistant I Want To Build",
+    "date": "2026-10-17",
+    "excerpt": "About a year ago, OpenClaw, the open-source AI agent platform, burst onto the tech scene and spread like wildfire.",
+    "tags": [
+      "development",
+      "ai"
+    ]
+  },
+  {
     "slug": "introducing-sierrafy",
     "title": "Building Sierrafy: An Open Identity Verification SDK for Sierra Leone",
     "date": "2026-06-21",
