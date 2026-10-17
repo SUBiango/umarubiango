@@ -55,6 +55,8 @@ The cover carries `fetchpriority="high"` (not `loading="lazy"`) because it is th
 
 `assets/images/og-image.jpg` (1200×630) is the site-wide fallback for every non-note page. It is a padded headshot, a stopgap — a properly designed card with name/title would be better.
 
+`docs/og-card-template.svg` is a Figma-importable 1200×630 card template in the site's terminal styling. Because Facebook and X render only the title, it is the way to get words into a preview on those platforms. Import, edit the headline and prompt slug, delete the `GUIDES` layer, export JPG q82, and mirror the headline into `og_title`. `/docs/*` is force-404'd in `_redirects`, so nothing there is publicly served.
+
 ## Subscriber sync (Netlify Function)
 
 `netlify/functions/sync-subscriber.js` receives the Netlify Forms submission webhook for the `newsletter` form and subscribes the email to ConvertKit (`/v3/forms/<id>/subscribe` — that endpoint legitimately takes `api_key`, not `api_secret`). It validates an `x-webhook-secret` header (constant-time compare), ignores submissions whose `form_name` is not `newsletter`, and uses a 10s socket timeout. Env: `CONVERTKIT_API_KEY`, `CONVERTKIT_FORM_ID`, `NETLIFY_SYNC_SECRET`.

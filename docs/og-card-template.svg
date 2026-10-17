@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OG CARD TEMPLATE — 1200x630
+  ===========================
+  Facebook and X render NO description in link previews (see CLAUDE.md
+  "Why Facebook and X show no description"). The headline below is the only
+  text those platforms will show, so it has to carry the whole post.
+
+  HOW TO USE
+    1. Drag this file into Figma (File > Import, or just drop it on canvas).
+    2. Edit the three HEADLINE lines and the PROMPT slug. Break lines by eye.
+    3. Delete the "GUIDES" layer.
+    4. Export 1200x630 JPG, quality ~82, to assets/images/notes/<slug>.jpg
+    5. Mirror the headline into the note's og_title frontmatter so the card
+       and the meta tag cannot drift apart.
+
+  RULES
+    - Max ~30 characters per headline line at 58px. Three lines maximum.
+    - Keep everything inside the GUIDES safe area (72px margin); some
+      placements crop the edges.
+    - Nothing essential in the bottom-left: X overlays its domain label
+      there. That is why the footer sits bottom-right.
+    - Test it small. Facebook mobile renders this about 350px wide.
+
+  FONTS
+    Inter and JetBrains Mono. Both are in assets/fonts/ as woff2; install the
+    .ttf locally or let Figma substitute. Figma will flag missing fonts on
+    import - substituting Inter for the headline is fine, the geometry holds.
+
+  TOKENS (from assets/css/main.css)
+    bg #11161c | surface #161d26 | border #2a3442 | command #ffffff
+    prompt #00ff41 @ 0.7 | accent-blue #00d9ff | text-muted #8a919e
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <title>Note OG card template</title>
+  <desc>1200x630 social preview card. Edit headline, delete GUIDES, export JPG q82.</desc>
+
+  <g id="BACKGROUND">
+    <rect width="1200" height="630" fill="#11161c"/>
+  </g>
+
+  <g id="TERMINAL-WINDOW">
+    <rect x="72" y="64" width="1056" height="502" rx="10" fill="#161d26" stroke="#2a3442" stroke-width="2"/>
+    <circle cx="110" cy="102" r="7" fill="#ff5f57"/>
+    <circle cx="134" cy="102" r="7" fill="#febc2e"/>
+    <circle cx="158" cy="102" r="7" fill="#28c840"/>
+  </g>
+
+  <!-- Swap <slug> for the real note slug -->
+  <g id="PROMPT">
+    <text x="112" y="178" font-family="JetBrains Mono, Menlo, monospace" font-size="23"
+          fill="#00ff41" fill-opacity="0.7">&#62; cat notes/&#60;slug&#62;.md</text>
+  </g>
+
+  <!-- The only text Facebook and X will show. Max ~30 chars per line. -->
+  <g id="HEADLINE">
+    <text x="112" y="268" font-family="Inter, Helvetica Neue, sans-serif" font-size="58" font-weight="600" fill="#ffffff">Shipping fast is not the</text>
+    <text x="112" y="336" font-family="Inter, Helvetica Neue, sans-serif" font-size="58" font-weight="600" fill="#ffffff">bottleneck. Deciding</text>
+    <text x="112" y="404" font-family="Inter, Helvetica Neue, sans-serif" font-size="58" font-weight="600" fill="#ffffff">what to ship is.</text>
+  </g>
+
+  <g id="RULE">
+    <rect x="112" y="452" width="56" height="3" fill="#00d9ff"/>
+  </g>
+
+  <!-- Bottom-right: X overlays its domain label on the bottom-LEFT -->
+  <g id="FOOTER">
+    <text x="1088" y="512" text-anchor="end" font-family="JetBrains Mono, Menlo, monospace" font-size="25">
+      <tspan fill="#00d9ff">ub://</tspan><tspan fill="#8a919e"> umarubiango.com</tspan>
+    </text>
+  </g>
+
+  <!-- DELETE THIS GROUP BEFORE EXPORT -->
+  <g id="GUIDES">
+    <rect x="72" y="72" width="1056" height="486" fill="none" stroke="#ff5f57"
+          stroke-width="2" stroke-dasharray="10 8" opacity="0.4"/>
+    <text x="80" y="60" font-family="JetBrains Mono, Menlo, monospace" font-size="16"
+          fill="#ff5f57" opacity="0.55">safe area — delete GUIDES before export</text>
+    <rect x="72" y="486" width="380" height="72" fill="none" stroke="#febc2e"
+          stroke-width="2" stroke-dasharray="6 6" opacity="0.4"/>
+    <text x="80" y="582" font-family="JetBrains Mono, Menlo, monospace" font-size="16"
+          fill="#febc2e" opacity="0.55">X overlays its domain label here — keep clear</text>
+  </g>
+</svg>
