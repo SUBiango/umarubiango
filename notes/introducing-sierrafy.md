@@ -6,8 +6,8 @@ tags: [development, open-source, infrastracture, NIN]
 slug: "introducing-sierrafy"
 featured_image: "/assets/images/notes/laptop-on-a-desk.jpg"
 featured_image_alt: "Cover image for Building Sierrafy: An Open Identity Verification SDK for Sierra Leone"
-featured_image_width: 700
-featured_image_height: 425
+featured_image_width: 1200
+featured_image_height: 630
 send: true
 broadcast: false
 sent: false

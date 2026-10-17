@@ -61,7 +61,7 @@ noteEntries.forEach(function(entry) {
   var featuredImageWidthAttr = featuredImageWidth ? ' width="' + escapeHtml(featuredImageWidth) + '"' : '';
   var featuredImageHeightAttr = featuredImageHeight ? ' height="' + escapeHtml(featuredImageHeight) + '"' : '';
   var featuredImageHtml = featuredImage
-    ? '        <figure class="note-featured-image"><img src="' + escapeHtml(featuredImage) + '" alt="' + escapeHtml(featuredImageAlt) + '"' + featuredImageWidthAttr + featuredImageHeightAttr + ' loading="lazy" decoding="async"></figure>\n'
+    ? '        <figure class="note-featured-image"><img src="' + escapeHtml(featuredImage) + '" alt="' + escapeHtml(featuredImageAlt) + '"' + featuredImageWidthAttr + featuredImageHeightAttr + ' fetchpriority="high" decoding="async"></figure>\n'
     : '';
   var newsletterHtml = showNewsletter
     ? (

@@ -4,10 +4,10 @@ date: 2026-02-19
 excerpt: "Technology is only one slice of the adoption pie in Sierra Leone."
 tags: [adoption, sierra-leone, product, strategy]
 slug: "why-no-one-will-adopt-your-tech-product-in-sierra-leone"
-featured_image: "/assets/images/notes/catton.webp"
+featured_image: "/assets/images/notes/catton.jpg"
 featured_image_alt: "Cover image for Why No One Will Adopt Your Tech Product in Sierra Leone"
-featured_image_width: 1536
-featured_image_height: 1024
+featured_image_width: 1200
+featured_image_height: 630
 send: true
 broadcast: false
 sent: false

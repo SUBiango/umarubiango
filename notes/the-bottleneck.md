@@ -4,10 +4,10 @@ date: 2026-03-10
 excerpt: "For the past two months I’ve been working on an e-commerce marketplace product."
 tags: [development, product, strategy]
 slug: "the-bottleneck"
-featured_image: "/assets/images/notes/umaru-catton-xa-office.webp"
+featured_image: "/assets/images/notes/umaru-catton-xa-office.jpg"
 featured_image_alt: "Cover image for The Bottleneck"
-featured_image_width: 1536
-featured_image_height: 1024
+featured_image_width: 1200
+featured_image_height: 630
 send: true
 broadcast: false
 sent: false

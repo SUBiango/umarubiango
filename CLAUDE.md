@@ -28,13 +28,32 @@ Source of truth for a note is `notes/<slug>.md` with YAML frontmatter. **Both** 
 2. `npm run generate:notes` (`scripts/generate-note-pages.js`) reads every `.md` in `notes/`, runs `gray-matter` + `marked`, and writes:
    - `notes/<slug>/index.html` per note (with prev/next nav by date desc, OG/Twitter meta, optional featured image)
    - `data/notes-index.json` containing `{slug, title, date, excerpt, tags}` per entry, sorted newest first
-   For `.webp` `featured_image`, the script looks for a sibling `.jpg`/`.jpeg`/`.png` and uses that as the social image fallback (`findSocialImageFallback`) — Facebook and many other scrapers handle WebP poorly.
+   For `.webp` `featured_image`, the script looks for a sibling `.jpg`/`.jpeg`/`.png` and uses that as the social image fallback (`findSocialImageFallback`) — Facebook and many other scrapers handle WebP poorly. **Prefer JPG and avoid needing this** — see Images below.
 3. Commit + push → Netlify deploys.
 4. `npm run broadcast` (`scripts/broadcast.js`) scans `notes/*.md` for entries where `broadcast: true` AND `sent: false`, and POSTs each to ConvertKit's `/v3/broadcasts` endpoint. **It does not write `sent: true` back** — that flip is manual to keep the script idempotent on failure.
 
 `broadcast.js` loads `.env` via its own minimal loader (no `dotenv` dependency). Required env: `CONVERTKIT_API_SECRET` (falls back to `CONVERTKIT_API_KEY` for backwards compatibility — broadcasts require the *secret*, not the key). Optional: `CONVERTKIT_BASE_URL`. `generate-note-pages.js` uses no env vars.
 
 `SITE_URL` is hardcoded to `https://www.umarubiango.com` in `generate-note-pages.js` — change there if the canonical host changes.
+
+## Images
+
+**Export every note cover at 1200×630 JPG (quality ~82), one file.** That single image is both the in-page hero and the `og:image`/`twitter:image`, so it has to satisfy the social spec: 1.91:1, ≥1200px wide, for the `summary_large_image` card.
+
+Frontmatter must match the real pixels — the values are emitted as `og:image:width`/`height` and as `width`/`height` on the `<img>`, so wrong numbers cause layout shift and bad social crops:
+
+```yaml
+featured_image: "/assets/images/notes/<name>.jpg"
+featured_image_alt: "..."
+featured_image_width: 1200
+featured_image_height: 630
+```
+
+**Do not use WebP for covers.** It is supported (`findSocialImageFallback`), but it obliges you to ship a same-named `.jpg`/`.png` twin purely for scrapers, and nothing in the pipeline verifies the twin still matches — the page can serve one picture while Facebook serves another, silently. WebP saves roughly 20–50 KB per cover; the sync hazard is not worth it. Note bodies may still use WebP, since only the cover feeds the OG tags.
+
+The cover carries `fetchpriority="high"` (not `loading="lazy"`) because it is the LCP element — don't reintroduce lazy-loading there.
+
+`assets/images/og-image.jpg` (1200×630) is the site-wide fallback for every non-note page. It is a padded headshot, a stopgap — a properly designed card with name/title would be better.
 
 ## Subscriber sync (Netlify Function)
 
