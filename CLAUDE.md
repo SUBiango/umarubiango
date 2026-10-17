@@ -24,7 +24,7 @@ There is no test runner, no linter, and no typecheck. `tests/` contains only `TE
 
 Source of truth for a note is `notes/<slug>.md` with YAML frontmatter. **Both** `notes/<slug>/index.html` and `data/notes-index.json` are **generated output** — never hand-edit either.
 
-1. Author writes `notes/<slug>.md` with frontmatter (`title`, `date`, `excerpt`, `tags`, `featured_image`, plus workflow flags `send`, `broadcast`, `sent`).
+1. Author writes `notes/<slug>.md` with frontmatter (`title`, `date`, `excerpt`, `tags`, `featured_image`, optional `og_title`, plus workflow flags `send`, `broadcast`, `sent`).
 2. `npm run generate:notes` (`scripts/generate-note-pages.js`) reads every `.md` in `notes/`, runs `gray-matter` + `marked`, and writes:
    - `notes/<slug>/index.html` per note (with prev/next nav by date desc, OG/Twitter meta, optional featured image)
    - `data/notes-index.json` containing `{slug, title, date, excerpt, tags}` per entry, sorted newest first
@@ -70,7 +70,21 @@ OG-scrape results are cached by Facebook (~7 days) and LinkedIn. After publishin
 - LinkedIn: https://www.linkedin.com/post-inspector/
 - X/Twitter: re-scrapes within minutes on its own
 
-If a user reports "Facebook only shows title + image, not excerpt," it's almost always stale cache rather than missing meta tags. Generated pages emit `og:description`, `twitter:description`, `og:image:secure_url`, etc. — verify by reading the generated HTML before touching the generator.
+## Why Facebook and X show no description
+
+**"Facebook only shows the image and title, the excerpt is missing" is not a bug and is not stale cache — do not try to fix it in the generator.** Facebook and X both stopped rendering link-preview descriptions:
+
+- **X** stripped text from `summary_large_image` cards in Oct 2023; the title later returned as an overlay on the image, the description never did.
+- **Facebook** dropped the description snippet from feed previews. Previews are image → domain → headline.
+- **WhatsApp and the Facebook debugger still show `og:description`** — which is exactly why it looks like a site bug. Same HTML, different renderers.
+
+Confirmed empirically (Oct 2026): the FB debugger lists the correct parsed `og:description` while the preview beside it omits the text.
+
+The practical consequences, since **the title is the only text these platforms render**:
+- `og_title` frontmatter (optional) overrides `og:title`, `twitter:title` and the X share-intent text without touching the on-page `<h1>` or `<title>`. Use it to give a terse note a self-contained social headline.
+- Any wording that must survive into a Facebook or X preview has to be **inside the 1200×630 image**.
+
+Before concluding anything else is wrong, read the generated HTML — pages do emit `og:description`, `twitter:description`, `og:image:secure_url`, etc.
 
 ## Page → data wiring
 

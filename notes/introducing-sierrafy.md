@@ -1,7 +1,7 @@
 ---
 title: "Building Sierrafy: An Open Identity Verification SDK for Sierra Leone"
 date: 2026-06-21
-excerpt: "Sierra Leone has achieved 93% national civial registration and ID issuance coverage. That's a major achievement by NCRA."
+excerpt: "Sierra Leone has achieved 93% national civil registration and ID issuance coverage. That's a major achievement by NCRA."
 tags: [development, open-source, infrastracture, NIN]
 slug: "introducing-sierrafy"
 featured_image: "/assets/images/notes/laptop-on-a-desk.jpg"

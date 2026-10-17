@@ -40,6 +40,12 @@ noteEntries.forEach(function(entry) {
   var slug = entry.slug;
   var title = entry.title;
   var excerpt = fm.excerpt || toExcerpt(parsed.content);
+  // Facebook and X render only the title in link previews (they drop og:description
+  // entirely), so og_title lets a note carry a self-contained social headline
+  // without changing the on-page <h1> or <title>.
+  var socialTitle = typeof fm.og_title === 'string' && fm.og_title.trim()
+    ? fm.og_title.trim()
+    : title;
   var date = formatDate(fm.date);
   var tags = Array.isArray(fm.tags) ? fm.tags : [];
   var featuredImage = typeof fm.featured_image === 'string' ? fm.featured_image.trim() : '';
@@ -88,7 +94,7 @@ noteEntries.forEach(function(entry) {
   var shareHtml =
     '        <div class="note-share">\n' +
     '          <span class="note-share__label">share</span>\n' +
-    '          <a href="https://x.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&amp;text=' + encodeURIComponent(title) + '" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on X">\n' +
+    '          <a href="https://x.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&amp;text=' + encodeURIComponent(socialTitle) + '" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on X">\n' +
     '            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>\n' +
     '          </a>\n' +
     '          <a href="https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl) + '" class="note-share__btn" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">\n' +
@@ -106,7 +112,7 @@ noteEntries.forEach(function(entry) {
     '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     '  <meta name="description" content="' + escapeHtml(excerpt) + '">\n' +
     '  <meta name="author" content="Umaru Biango">\n' +
-    '  <meta property="og:title" content="' + escapeHtml(title) + '">\n' +
+    '  <meta property="og:title" content="' + escapeHtml(socialTitle) + '">\n' +
     '  <meta property="og:description" content="' + escapeHtml(excerpt) + '">\n' +
     '  <meta property="og:type" content="article">\n' +
     '  <meta property="og:url" content="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
@@ -120,7 +126,7 @@ noteEntries.forEach(function(entry) {
     (socialImageUrl && featuredImageHeight ? ('  <meta property="og:image:height" content="' + featuredImageHeight + '">\n') : '') +
     (socialImageType ? ('  <meta property="og:image:type" content="' + socialImageType + '">\n') : '') +
     '  <meta name="twitter:card" content="' + (featuredImageUrl ? 'summary_large_image' : 'summary') + '">\n' +
-    '  <meta name="twitter:title" content="' + escapeHtml(title) + '">\n' +
+    '  <meta name="twitter:title" content="' + escapeHtml(socialTitle) + '">\n' +
     '  <meta name="twitter:description" content="' + escapeHtml(excerpt) + '">\n' +
     (socialImageUrl ? ('  <meta name="twitter:image" content="' + escapeHtml(socialImageUrl) + '">\n') : '') +
     '  <link rel="canonical" href="' + SITE_URL + '/notes/' + encodeURIComponent(slug) + '/">\n' +
