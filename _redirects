@@ -11,4 +11,7 @@
 
 # Tag filtering used to be a query param handled in the browser. It is now a
 # set of static pages, so send the old URLs to the page that replaced them.
-/notes.html  tag=:tag  /notes/tag/:tag/  301
+# Needs the forcing "!" for the same reason as the rules above: notes.html
+# exists in the publish dir, so without it Netlify serves the file and skips
+# the redirect.
+/notes.html  tag=:tag  /notes/tag/:tag/  301!
