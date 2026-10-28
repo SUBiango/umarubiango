@@ -1,0 +1,30 @@
+{
+  "order": "SIERRA LEONE · ORDER #2026",
+  "paid_in": "LATE NIGHTS",
+  "items": [
+    {
+      "name": "Sierrafy",
+      "status": "on-the-bench",
+      "description": "identity verification SDK",
+      "url": "https://sierrafy.dev"
+    },
+    {
+      "name": "Doli",
+      "status": "on-the-bench",
+      "description": "whatsapp assistant",
+      "note": "the-ai-assistant-i-want-to-build"
+    },
+    {
+      "name": "Witap",
+      "status": "parked",
+      "description": "b2b payment gateway",
+      "url": "https://getwitap.netlify.app"
+    },
+    {
+      "name": "Kontriticket",
+      "status": "parked",
+      "description": "registration + ticketing",
+      "url": "https://kontriticket.com"
+    }
+  ]
+}

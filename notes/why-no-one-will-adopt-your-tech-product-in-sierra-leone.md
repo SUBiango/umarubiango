@@ -1,5 +1,9 @@
 ---
+number: 1
 title: "Why No One Will Adopt Your Tech Product in Sierra Leone"
+tag: ADOPTION
+dek: "Infrastructure is one slice of adoption. Trust, skills and poverty take the rest."
+summary: "Infrastructure is one slice of adoption. Trust, skills and poverty take the rest."
 date: 2026-02-19
 excerpt: "Technology is only one slice of the adoption pie in Sierra Leone."
 tags: [adoption, sierra-leone, product, strategy]

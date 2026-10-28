@@ -1,5 +1,9 @@
 ---
+number: 3
 title: "Building Sierrafy: An Open Identity Verification SDK for Sierra Leone"
+tag: IDENTITY
+dek: "93% of Sierra Leoneans hold a NIN. Developers have no open way to verify one."
+summary: "93% of Sierra Leoneans hold a NIN, but developers have no open way to verify one."
 date: 2026-06-21
 excerpt: "Sierra Leone has achieved 93% national civil registration and ID issuance coverage. That's a major achievement by NCRA."
 tags: [development, open-source, infrastracture, NIN]

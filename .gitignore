@@ -1,3 +1,7 @@
 .DS_Store
 node_modules/
 .env
+
+# Design-tool export, kept locally only. The Netlify publish root is the repo
+# root, so committing this would serve a React mockup on the live site.
+Field notebook * Desktop-html/

@@ -1,5 +1,6 @@
 [
   {
+    "number": 4,
     "slug": "the-ai-assistant-i-want-to-build",
     "title": "The AI Assistant I Want To Build",
     "date": "2026-10-17",
@@ -10,6 +11,7 @@
     ]
   },
   {
+    "number": 3,
     "slug": "introducing-sierrafy",
     "title": "Building Sierrafy: An Open Identity Verification SDK for Sierra Leone",
     "date": "2026-06-21",
@@ -22,6 +24,7 @@
     ]
   },
   {
+    "number": 2,
     "slug": "the-bottleneck",
     "title": "The Bottleneck",
     "date": "2026-03-10",
@@ -33,6 +36,7 @@
     ]
   },
   {
+    "number": 1,
     "slug": "why-no-one-will-adopt-your-tech-product-in-sierra-leone",
     "title": "Why No One Will Adopt Your Tech Product in Sierra Leone",
     "date": "2026-02-19",

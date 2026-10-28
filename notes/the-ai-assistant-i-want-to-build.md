@@ -1,5 +1,9 @@
 ---
+number: 4
 title: "The AI Assistant I Want To Build"
+tag: AI
+dek: "Natural language for the conversation, deterministic logic for the truth."
+summary: "Natural language for the conversation, deterministic logic for the truth. Designing Doli, a WhatsApp assistant whose memory doesn't depend on which model is running it."
 date: 2026-10-17
 excerpt: "About a year ago, OpenClaw, the open-source AI agent platform, burst onto the tech scene and spread like wildfire."
 tags: [development, ai]
@@ -41,9 +45,9 @@ I remembered seeing people interact with their OpenClaw agents through chat apps
 
 What if I could simply talk to an agent on WhatsApp, using natural language, and have it take care of my tasks, keep track of my notes, and remind me of anything I tell it to remember?
 
-No forms. No navigating menus. Just a conversation.
+<p class="emphasis">No forms. No navigating menus. Just a conversation.</p>
 
-I started exploring the idea almost immediately. But there was one thing I wanted to get right from the beginning: **natural language for interaction, deterministic logic for the underlying system.**
+I started exploring the idea almost immediately. But there was one thing I wanted to get right from the beginning: **<span class="highlight">natural language for interaction, deterministic logic for the underlying system.</span>**
 
 LLMs hallucinate. They can confidently tell you something that isn’t true. That’s not the kind of behaviour you want from a personal assistant you rely on to remember things for you.
 
@@ -64,7 +68,10 @@ I needed a state engine that decides what is true, with the LLM handling the con
 
 The model interprets my request and proposes a structured operation. The state engine validates that operation, applies the relevant rules, and persists the result.
 
-The model can suggest what should happen. It doesn't get to decide what actually happened.
+<div>
+<p class="emphasis">The model can suggest what should happen. It doesn't get to decide what actually happened.</p>
+<p class="margin-note">↑ the whole point</p>
+</div>
 
 That distinction is at the heart of the entire system.
 
@@ -72,13 +79,20 @@ That distinction is at the heart of the entire system.
 
 Since every interaction happens through chat, I needed to be deliberate about separating three things that can easily get blurred together: conversation, state, and memory.
 
-**Conversation is what was said. State is what is currently true. Memory is information deliberately retained for later retrieval.**
+<div class="callout-card">
+Conversation is what was said.<br>
+State is what is currently true.<br>
+Memory is information deliberately retained for later retrieval.
+</div>
 
 Consider this example.
 
 I tell Doli:
 
-"I need to call the university tomorrow."
+<div class="chat">
+<span class="chat-from">me → Doli</span>
+<p class="bubble">I need to call the university tomorrow.</p>
+</div>
 
 The conversation contains that message.
 
@@ -86,7 +100,10 @@ The state engine can turn it into a task called "Call the university", with a du
 
 Now suppose I explicitly tell Doli:
 
-"Remember that I prefer morning meetings."
+<div class="chat">
+<span class="chat-from">me → Doli</span>
+<p class="bubble">Remember that I prefer morning meetings.</p>
+</div>
 
 That becomes a memory the system can retrieve when relevant.
 
@@ -108,7 +125,10 @@ That's not quite what I'm building.
 
 I'm using an LLM because it's good at understanding natural language. I can tell Doli:
 
-"I need to call the university tomorrow at 2 and remind me an hour before."
+<div class="chat">
+<span class="chat-from">me → Doli</span>
+<p class="bubble">I need to call the university tomorrow at 2 and remind me an hour before.</p>
+</div>
 
 It should understand that I want a task scheduled for tomorrow at 2 PM, with a reminder one hour earlier.
 
@@ -118,7 +138,11 @@ The model interprets the request and proposes a structured operation. The system
 
 The boundary is deliberate.
 
-**The LLM interprets. The state engine decides what is true. The database is the source of truth.**
+<div class="callout-dark paper-dark">
+<span>The LLM interprets.</span>
+<span>The state engine decides what is true.</span>
+<span>The database is the source of truth.</span>
+</div>
 
 If the model disappears, changes, gets replaced, or produces a different response tomorrow, my tasks and reminders should still exist exactly as they were.
 

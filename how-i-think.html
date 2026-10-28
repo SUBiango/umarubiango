@@ -1,141 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Umaru Biango's core principles for product development: optimize for constraints, clarity over cleverness, systems over features. A mental operating system.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principles · Umaru Biango</title>
 
-  <meta property="og:title" content="How I Think — Umaru Biango">
-  <meta property="og:description" content="Principles and mental models for building where constraints are real.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.umarubiango.com/how-i-think.html">
-  <meta property="og:site_name" content="Umaru Biango">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<meta name="description" content="How Umaru Biango builds software in emerging markets: optimize for constraints, clarity over cleverness, systems over features.">
+<meta property="og:title" content="Principles · Umaru Biango">
+<meta property="og:description" content="Optimize for constraints. Clarity over cleverness. Systems over features.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.umarubiango.com/how-i-think.html">
+<meta property="og:site_name" content="Umaru Biango">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Umaru Biango and his cat in a taped polaroid, beside the line: Systems designed where constraints are real.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Principles · Umaru Biango">
+<meta name="twitter:description" content="Optimize for constraints. Clarity over cleverness. Systems over features.">
+<meta name="twitter:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<link rel="canonical" href="https://www.umarubiango.com/how-i-think.html">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="How I Think — Umaru Biango">
-  <meta name="twitter:description" content="Principles and mental models for building where constraints are real.">
-  <meta name="twitter:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<link rel="preload" href="/assets/fonts/literata-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-latin-700-soft-wonk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="https://www.umarubiango.com/how-i-think.html">
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" href="assets/images/favicon/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="assets/images/favicon/favicon.svg" />
-  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
-  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
-
-  <link rel="stylesheet" href="assets/css/main.css">
-  <title>Philosophy | Umaru Biango</title>
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
 </head>
-<body>
 
-  <a href="#main" class="skip-link">Skip to content</a>
+<body class="paper page" id="top">
+<a href="#main" class="skip-link">Skip to content</a>
 
-  <!-- Navigation -->
-  <nav class="site-nav" aria-label="Main navigation">
-    <div class="page-wrapper">
-      <a href="index.html" class="nav-logo">ub://</a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="index.html">home</a></li>
-        <li><a href="notes.html">notes</a></li>
-        <li><a href="how-i-think.html" aria-current="page">philosophy</a></li>
-        <li><a href="now.html">now</a></li>
-        <li><a href="contact.html">contact</a></li>
-      </ul>
-    </div>
-  </nav>
+<div class="container">
 
-  <!-- Main -->
+  <header class="site-header">
+    <a class="brand" href="/index.html">
+      <span class="brand-stamp tilt" aria-hidden="true">UB</span>
+      <span class="brand-name">Umaru Biango</span>
+    </a>
+    <nav class="tabs" aria-label="Main">
+      <a class="tab tilt" href="/notes.html">field notes</a>
+      <a class="tab tilt" href="/index.html#building">building</a>
+      <a class="tab tilt" href="/now.html">now</a>
+      <a class="tab tilt" href="/contact.html">say hi</a>
+    </nav>
+  </header>
+
   <main id="main" tabindex="-1">
-    <div class="page-wrapper">
 
-      <header class="page-header">
-        <h1>philosophy</h1>
-        <p class="page-header__sub">// about building software especially in emerging markets</p>
-      </header>
-
-      <!-- Principles -->
-      <section class="think-section" aria-labelledby="principles-heading">
-        <h2 id="principles-heading" class="u-sr-only">Principles</h2>
-        <div class="terminal-block" role="region" aria-label="Principles terminal output">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">principles</span>
-          </span>
-          <span class="t-out">Optimize for constraints</span>
-          <span class="t-out">Performance over trend</span>
-          <span class="t-out">Clarity over cleverness</span>
-          <span class="t-spacer" aria-hidden="true"></span>
-        </div>
-      </section>
-
-      <!-- On building -->
-      <section class="think-section" aria-labelledby="on-building-heading">
-        <h2 id="on-building-heading" class="u-sr-only">On Building</h2>
-        <div class="terminal-block" role="region" aria-label="On building terminal output">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">on_building</span>
-          </span>
-          <span class="t-out">Ship early. Learn from real users, not assumptions</span>
-          <span class="t-out">Complexity is a liability. Kill it on sight</span>
-          <span class="t-spacer" aria-hidden="true"></span>
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">on_emerging_markets</span>
-          </span>
-          <span class="t-out">3G is not an edge case. It's the baseline</span>
-          <span class="t-out">Payment failure is not a bug. It's a business problem</span>
-          <span class="t-out">Regulatory friction is a moat if you learn to navigate it</span>
-        </div>
-      </section>
-
-      <!-- On learning -->
-      <section class="think-section" aria-labelledby="on-learning-heading">
-        <h2 id="on-learning-heading" class="u-sr-only">On Learning</h2>
-        <div class="terminal-block" role="region" aria-label="On learning terminal output">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">on_learning</span>
-          </span>
-          <span class="t-out">Read primary sources. Summaries are lossy</span>
-          <span class="t-out">Build the thing to understand the thing</span>
-          <span class="t-out">Teach it. Writing forces precision</span>
-        </div>
-      </section>
-
+    <div class="page-head">
+      <a class="back-link" href="/index.html#principles">← back to the slogans</a>
+      <h1 class="section-title">Principles</h1>
+      <p class="annotation tilt tilt-left">↑ the back of the poda-poda, unpacked</p>
     </div>
+
+    <!-- The three slogans, the way they appear on the homepage. -->
+    <section class="poda paper-dark tilt" aria-labelledby="poda-h">
+      <h2 class="poda-label" id="poda-h">IF MY CODE WERE A PODA-PODA, THE BACK WOULD SAY:</h2>
+      <ul class="poda-list" role="list">
+        <li class="tilt">Optimize for constraints</li>
+        <li class="tilt">Clarity over cleverness</li>
+        <li class="tilt">Systems over features</li>
+      </ul>
+    </section>
+
+    <div class="page-sheet">
+      <span class="tape tape--lg tilt" aria-hidden="true"></span>
+      <div class="sheet-body">
+
+        <h2 class="sheet-heading">On building</h2>
+        <ul class="principle-list" role="list">
+          <li>
+            <h3>Ship early.</h3>
+            <p>Learn from real users, not assumptions. The first version exists to be corrected.</p>
+          </li>
+          <li>
+            <h3>Complexity is a liability.</h3>
+            <p>Kill it on sight. Every moving part is something that breaks on a Friday night.</p>
+          </li>
+          <li>
+            <h3>Performance over trend.</h3>
+            <p>A fast, plain thing beats a slow, fashionable one. Always.</p>
+          </li>
+        </ul>
+
+        <h2 class="sheet-heading">On emerging markets</h2>
+        <ul class="principle-list" role="list">
+          <li>
+            <h3>3G is not an edge case.</h3>
+            <p>It's the baseline. Design for the connection most people actually have.</p>
+          </li>
+          <li>
+            <h3>Payment failure is not a bug.</h3>
+            <p>It's a business problem. Treat retries, reconciliation and refunds as product, not plumbing.</p>
+          </li>
+          <li>
+            <h3>Regulatory friction is a moat.</h3>
+            <p>If you learn to navigate it. Most people won't, and that's the point.</p>
+          </li>
+        </ul>
+
+        <h2 class="sheet-heading">On learning</h2>
+        <ul class="principle-list" role="list">
+          <li>
+            <h3>Read primary sources.</h3>
+            <p>Summaries are lossy. Go to the spec, the paper, the law.</p>
+          </li>
+          <li>
+            <h3>Build the thing to understand the thing.</h3>
+            <p>Reading about a system and running one are different kinds of knowing.</p>
+          </li>
+          <li>
+            <h3>Teach it.</h3>
+            <p>Writing forces precision. That's most of why this notebook exists.</p>
+          </li>
+        </ul>
+
+        <p class="note-signature tilt tilt-left">— Umaru</p>
+      </div>
+    </div>
+
+    <section class="slip-wrap slip-wrap--spaced" id="hello" aria-labelledby="slip-think">
+      <div class="slip tilt">
+        <h2 class="slip-title" id="slip-think">pass me a note?</h2>
+        <p class="slip-copy">One field note a month, straight to your inbox. No growth hacks.</p>
+        <form class="slip-form" name="newsletter" method="POST" action="/" data-netlify="true" data-subscribe>
+          <input type="hidden" name="form-name" value="newsletter">
+          <input type="hidden" name="form-type" value="newsletter">
+          <input type="hidden" name="note_slug" value="">
+          <div class="field">
+            <label for="email-think">your email</label>
+            <input class="input" id="email-think" type="email" name="email"
+                   placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <button class="btn" type="submit">send it</button>
+        </form>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Footer -->
   <footer class="site-footer">
-    <div class="page-wrapper">
-      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
-      <div class="footer-social" aria-label="Social links">
-        <a href="https://github.com/SUBiango" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.648.5.5 5.648.5 12c0 5.084 3.292 9.395 7.863 10.916.575.106.787-.25.787-.556 0-.275-.012-1.188-.018-2.154-3.2.694-3.875-1.356-3.875-1.356-.525-1.337-1.281-1.694-1.281-1.694-1.05-.719.081-.706.081-.706 1.163.081 1.775 1.194 1.775 1.194 1.031 1.769 2.706 1.256 3.366.962.106-.75.406-1.256.737-1.544-2.556-.287-5.244-1.275-5.244-5.675 0-1.256.45-2.281 1.188-3.087-.119-.294-.519-1.475.112-3.075 0 0 .969-.313 3.175 1.181a11.067 11.067 0 0 1 5.775 0c2.206-1.494 3.175-1.181 3.175-1.181.631 1.6.231 2.781.112 3.075.738.806 1.188 1.831 1.188 3.087 0 4.412-2.694 5.381-5.263 5.662.419.363.794 1.075.794 2.169 0 1.569-.013 2.831-.013 3.213 0 .306.206.669.794.556A11.508 11.508 0 0 0 23.5 12c0-6.352-5.148-11.5-11.5-11.5Z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.25h2.75L16.75 9h-3.25V6.75c0-1.031.281-1.75 1.75-1.75h1.75V2.125A23.74 23.74 0 0 0 14.438 2C11.719 2 9.75 3.656 9.75 6.688V9H7v3.75h2.75V21h3.75Z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/umarubiango/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.756 5.756 0 0 1 22 7.75v8.5A5.756 5.756 0 0 1 16.25 22h-8.5A5.756 5.756 0 0 1 2 16.25v-8.5A5.756 5.756 0 0 1 7.75 2Zm8.5 1.75h-8.5A4.004 4.004 0 0 0 3.75 7.75v8.5a4.004 4.004 0 0 0 4 4h8.5a4.004 4.004 0 0 0 4-4v-8.5a4.004 4.004 0 0 0-4-4Zm-4.25 2.5A5.75 5.75 0 1 1 6.25 12 5.756 5.756 0 0 1 12 6.25Zm0 1.75A4 4 0 1 0 16 12a4.004 4.004 0 0 0-4-4Zm6-2.125a1.125 1.125 0 1 1-1.125 1.125A1.125 1.125 0 0 1 18 5.875Z"/></svg>
-        </a>
-      </div>
-      <p>&copy; 2026 Umaru S. Biango</p>
+    <div class="footer-row">
+      <span>© 2026 Umaru S. Biango · built light, for 3G</span>
+      <span class="footer-links">
+        <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+        <a href="https://github.com/SUBiango" target="_blank" rel="me noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/umaru-sahr-biango-8898b2127/" target="_blank" rel="me noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/umarusahrbiango/" target="_blank" rel="me noopener">Instagram</a>
+        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="me noopener">Facebook</a>
+      </span>
     </div>
   </footer>
 
-  <script src="assets/js/terminal.js"></script>
-  <script src="assets/js/how-i-think.js"></script>
+</div>
 
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>

@@ -4,7 +4,8 @@
   "description": "Personal website of Umaru Biango",
   "private": true,
   "scripts": {
-    "generate:notes": "node scripts/generate-note-pages.js",
+    "generate": "node scripts/generate-site.js",
+    "generate:notes": "node scripts/generate-site.js",
     "broadcast": "node scripts/broadcast.js"
   },
   "devDependencies": {

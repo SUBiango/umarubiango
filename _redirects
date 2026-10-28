@@ -8,3 +8,7 @@
 # publish dir — without it Netlify serves the file and skips the redirect.
 /docs/*     /404.html   404!
 /netlify/*  /404.html   404!
+
+# Tag filtering used to be a query param handled in the browser. It is now a
+# set of static pages, so send the old URLs to the page that replaced them.
+/notes.html  tag=:tag  /notes/tag/:tag/  301

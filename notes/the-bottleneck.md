@@ -1,5 +1,9 @@
 ---
+number: 2
 title: "The Bottleneck"
+tag: STRATEGY
+dek: "Code was never the bottleneck."
+summary: "Why my V1 takes months when AI builds apps in a weekend. Code was never the bottleneck."
 date: 2026-03-10
 excerpt: "For the past two months I’ve been working on an e-commerce marketplace product."
 tags: [development, product, strategy]

@@ -1,184 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Umaru Sahr Biango builds B2B payments rails and operational software for West Africa's emerging markets. Systems designed where constraints are real.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umaru Biango: Systems designed where constraints are real</title>
 
-  <meta property="og:title" content="Umaru Sahr Biango">
-  <meta property="og:description" content="Emerging markets product builder. I design systems where constraints are real.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.umarubiango.com/">
-  <meta property="og:site_name" content="Umaru Biango">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<meta name="description" content="Field notes from building for West Africa. Umaru Biango designs and ships payments, identity and operational software for emerging markets.">
+<meta property="og:title" content="Umaru Biango: Systems designed where constraints are real">
+<meta property="og:description" content="Field notes from building for West Africa. One a month.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.umarubiango.com/">
+<meta property="og:site_name" content="Umaru Biango">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Umaru Biango and his cat in a taped polaroid, beside the line: Systems designed where constraints are real.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Umaru Biango: Systems designed where constraints are real">
+<meta name="twitter:description" content="Field notes from building for West Africa. One a month.">
+<meta name="twitter:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<link rel="canonical" href="https://www.umarubiango.com/">
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Umaru Sahr Biango">
-  <meta name="twitter:description" content="Emerging markets product builder. I design systems where constraints are real.">
-  <meta name="twitter:image" content="https://www.umarubiango.com/assets/images/og-image.jpg">
+<link rel="preload" href="/assets/fonts/literata-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-latin-700-soft-wonk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/main.css">
 
-  <link rel="canonical" href="https://www.umarubiango.com/">
+<link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg">
+<link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+<link rel="manifest" href="/assets/images/favicon/site.webmanifest">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" href="/assets/images/favicon/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon/favicon.svg" />
-  <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png" />
-  <link rel="manifest" href="/assets/images/favicon/site.webmanifest" />
-
-  <link rel="stylesheet" href="assets/css/main.css">
-
-  <title>Umaru Sahr Biango — Emerging Markets Product Builder</title>
-
-  <!-- Structured Data (Schema.org) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Umaru Sahr Biango",
-    "url": "https://www.umarubiango.com",
-    "jobTitle": "Product Builder",
-    "description": "Emerging markets product builder. I design systems where constraints are real.",
-    "sameAs": [
-      "https://github.com/SUBiango",
-      "https://www.facebook.com/umaru.biango",
-      "https://www.instagram.com/umarubiango/"
-    ],
-    "knowsAbout": ["B2B Payments", "Emerging Markets", "West Africa", "Product Development", "Software Engineering"]
-  }
-  </script>
-
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Umaru Sahr Biango",
+  "url": "https://www.umarubiango.com",
+  "jobTitle": "Product Builder",
+  "description": "Product builder. Systems designed where constraints are real.",
+  "sameAs": [
+    "https://github.com/SUBiango",
+    "https://www.linkedin.com/in/umaru-sahr-biango-8898b2127/",
+    "https://www.instagram.com/umarusahrbiango/",
+    "https://www.facebook.com/umaru.biango"
+  ],
+  "knowsAbout": ["B2B Payments", "Identity Verification", "Emerging Markets", "West Africa", "Product Development", "Software Engineering"]
+}
+</script>
 </head>
-<body>
 
-  <a href="#main" class="skip-link">Skip to content</a>
+<body class="paper page" id="top">
+<a href="#main" class="skip-link">Skip to content</a>
 
-  <!-- Navigation -->
-  <nav class="site-nav" aria-label="Main navigation">
-    <div class="page-wrapper">
-      <a href="index.html" class="nav-logo">ub://</a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="index.html" aria-current="page">home</a></li>
-        <li><a href="notes.html">notes</a></li>
-        <li><a href="how-i-think.html">philosophy</a></li>
-        <li><a href="now.html">now</a></li>
-        <li><a href="contact.html">contact</a></li>
-      </ul>
-    </div>
-  </nav>
+<div class="container">
 
-  <!-- Main -->
+  <header class="site-header">
+    <a class="brand" href="#top">
+      <span class="brand-stamp tilt" aria-hidden="true">UB</span>
+      <span class="brand-name">Umaru Biango</span>
+    </a>
+    <nav class="tabs" aria-label="Main">
+      <a class="tab tilt" href="#notes">field notes</a>
+      <a class="tab tilt" href="#building">building</a>
+      <a class="tab tilt" href="/now.html">now</a>
+      <a class="tab tilt" href="#hello">say hi</a>
+    </nav>
+  </header>
+
   <main id="main" tabindex="-1">
-    <div class="page-wrapper">
 
-      <!-- Hero: terminal animation -->
-      <section class="hero" aria-label="Introduction">
-        <div
-          class="terminal-block"
-          id="hero-terminal"
-          role="region"
-          aria-label="Terminal introduction"
-          aria-live="polite"
-        >
-          <!-- Populated by index.js typewriter -->
+    <!-- Thesis -->
+    <section class="thesis" aria-labelledby="thesis-h">
+      <p class="kicker">FIELD NOTEBOOK · VOL. 1 · 2026</p>
+      <h1 class="thesis-title" id="thesis-h">Systems designed where <span class="highlight">constraints are real.</span></h1>
+      <p class="annotation tilt tilt-left">↑ the whole idea, in six words</p>
+      <p class="subline">Field notes from building for <span class="wavy">West Africa</span>.</p>
+      <p class="byline">by Umaru Biango, product builder · <a href="#about">more about me ↓</a></p>
+    </section>
+
+    <!-- Field notes -->
+    <section class="section" id="notes" aria-labelledby="notes-h">
+      <div class="section-head">
+        <h2 class="section-title" id="notes-h">Field notes</h2>
+        <span class="annotation tilt tilt-left">one a month, promise →</span>
+      </div>
+<!-- generated:notes -->
+<div class="note-grid">
+  <a class="note-card tilt note-card--featured" href="notes/the-ai-assistant-i-want-to-build/">
+    <span class="tape tilt tape--mid tape--lg" aria-hidden="true"></span>
+    <span class="card-head">
+      <span class="stamp stamp--md tilt">NO. 04</span>
+      <span class="card-meta">17 OCT 2026 · AI</span>
+      <span class="card-flag">← newest</span>
+    </span>
+    <span class="card-title">The AI Assistant I Want To Build</span>
+    <span class="card-dek">Natural language for the conversation, deterministic logic for the truth. Designing Doli, a WhatsApp assistant whose memory doesn't depend on which model is running it.</span>
+    <span class="card-cta">read it →</span>
+  </a>
+  <a class="note-card tilt" href="notes/introducing-sierrafy/">
+    <span class="tape tilt tape--right tape--alt" aria-hidden="true"></span>
+    <span class="card-head">
+      <span class="stamp">NO. 03</span>
+      <span class="card-meta">JUN 2026 · IDENTITY</span>
+    </span>
+    <span class="card-title">Building Sierrafy: An Open Identity Verification SDK for Sierra Leone</span>
+    <span class="card-dek">93% of Sierra Leoneans hold a NIN, but developers have no open way to verify one.</span>
+  </a>
+  <a class="note-card tilt" href="notes/the-bottleneck/">
+    <span class="tape tilt tape--mid" aria-hidden="true"></span>
+    <span class="card-head">
+      <span class="stamp">NO. 02</span>
+      <span class="card-meta">MAR 2026 · STRATEGY</span>
+    </span>
+    <span class="card-title">The Bottleneck</span>
+    <span class="card-dek">Why my V1 takes months when AI builds apps in a weekend. Code was never the bottleneck.</span>
+  </a>
+  <a class="note-card tilt" href="notes/why-no-one-will-adopt-your-tech-product-in-sierra-leone/">
+    <span class="tape tilt tape--left tape--alt" aria-hidden="true"></span>
+    <span class="card-head">
+      <span class="stamp">NO. 01</span>
+      <span class="card-meta">FEB 2026 · ADOPTION</span>
+    </span>
+    <span class="card-title">Why No One Will Adopt Your Tech Product in Sierra Leone</span>
+    <span class="card-dek">Infrastructure is one slice of adoption. Trust, skills and poverty take the rest.</span>
+  </a>
+</div>
+<!-- /generated:notes -->
+      <a class="section-more" href="/notes.html">more field notes →</a>
+    </section>
+
+    <!-- Currently building -->
+    <section class="building" id="building" aria-labelledby="building-h">
+      <div class="building-intro">
+        <h2 class="section-title" id="building-h">Currently building</h2>
+        <p class="annotation tilt tilt-left">every project costs something.<br>here's the receipt.</p>
+      </div>
+<!-- generated:receipt -->
+<div class="receipt tilt">
+  <p class="receipt-title">UB WORKSHOP</p>
+  <p class="receipt-sub">SIERRA LEONE · ORDER #2026</p>
+  <hr class="receipt-rule" aria-hidden="true">
+  <ul class="receipt-items" role="list">
+    <li>
+    <a class="receipt-item is-bench" href="https://sierrafy.dev" target="_blank" rel="noopener">
+      <span class="receipt-line"><span class="receipt-name">SIERRAFY</span><span class="receipt-status is-bench">ON THE BENCH</span></span>
+      <span class="receipt-desc">identity verification SDK</span>
+    </a>
+    </li>
+    <li>
+    <a class="receipt-item is-bench" href="notes/the-ai-assistant-i-want-to-build/">
+      <span class="receipt-line"><span class="receipt-name">DOLI</span><span class="receipt-status is-bench">ON THE BENCH</span></span>
+      <span class="receipt-desc">whatsapp assistant · read note no. 04</span>
+    </a>
+    </li>
+    <li>
+    <a class="receipt-item is-parked" href="https://getwitap.netlify.app" target="_blank" rel="noopener">
+      <span class="receipt-line"><span class="receipt-name">WITAP</span><span class="receipt-status is-parked">PARKED</span></span>
+      <span class="receipt-desc">b2b payment gateway</span>
+    </a>
+    </li>
+    <li>
+    <a class="receipt-item is-parked" href="https://kontriticket.com" target="_blank" rel="noopener">
+      <span class="receipt-line"><span class="receipt-name">KONTRITICKET</span><span class="receipt-status is-parked">PARKED</span></span>
+      <span class="receipt-desc">registration + ticketing</span>
+    </a>
+    </li>
+  </ul>
+  <hr class="receipt-rule" aria-hidden="true">
+  <p class="receipt-total"><span>ITEMS</span><span>4</span></p>
+  <p class="receipt-total"><span>PAID IN</span><span>LATE NIGHTS</span></p>
+  <p class="receipt-foot">** THANK YOU, COME AGAIN **</p>
+  <p class="receipt-key">STATUS KEY: ON THE BENCH · SHIPPED · PARKED · SCRAPPED</p>
+</div>
+<!-- /generated:receipt -->
+    </section>
+
+    <!-- Principles -->
+    <section class="poda paper-dark tilt" id="principles" aria-labelledby="poda-h">
+      <h2 class="poda-label" id="poda-h">IF MY CODE WERE A PODA-PODA, THE BACK WOULD SAY:</h2>
+      <ul class="poda-list" role="list">
+        <li class="tilt">Optimize for constraints</li>
+        <li class="tilt">Clarity over cleverness</li>
+        <li class="tilt">Systems over features</li>
+      </ul>
+      <a class="poda-more" href="/how-i-think.html">THE LONGER VERSION →</a>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about" aria-labelledby="about-h">
+      <figure class="polaroid tilt">
+        <span class="tape tilt" aria-hidden="true"></span>
+        <div class="polaroid-photo">
+          <img src="/assets/images/umaru.webp" width="480" height="480"
+               alt="Umaru Biango at home, with his cat beside him." loading="lazy" decoding="async">
         </div>
-      </section>
+        <figcaption class="polaroid-caption">me &amp; the boss</figcaption>
+      </figure>
+      <div class="bio tilt">
+        <span class="bio-margin" aria-hidden="true"></span>
+        <span class="tape tilt tape--alt" aria-hidden="true"></span>
+        <h2 class="bio-greeting" id="about-h">hi, I'm Umaru.</h2>
+        <p>I'm a product builder. I created and maintain <a href="https://sierrafy.dev" target="_blank" rel="noopener">Sierrafy</a>, an open-source toolkit for verifying Sierra Leone's national IDs, and I run Young Access Hub, a youth-led nonprofit in Kono District. The rest of it is <a href="#building">on the receipt above</a>.</p>
+        <p>Once a month I write up what building for these markets teaches me: what breaks, what survives, what scales. Sometimes something else entirely.</p>
+      </div>
+    </section>
 
-      <!-- Beyond the Role -->
-      <section class="home-section" aria-labelledby="build-for-heading">
-        <h2 id="build-for-heading" class="section-label">beyond the role</h2>
-        <div class="terminal-block" role="region" aria-label="About Umaru">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">cat about.txt</span>
-          </span>
-          <span class="t-out">By day, I work in AI, processing data for image detection systems.</span>
-          <span class="t-out">By night, I hide in my terminal and code editor building software solutions.</span>
-        </div>
-      </section>
+    <!-- Subscribe -->
+    <section class="slip-wrap" id="hello" aria-labelledby="slip-home">
+      <div class="slip tilt">
+        <h2 class="slip-title" id="slip-home">pass me a note?</h2>
+        <p class="slip-copy">One field note a month, straight to your inbox. No growth hacks.</p>
+        <form class="slip-form" name="newsletter" method="POST" action="/" data-netlify="true" data-subscribe>
+          <input type="hidden" name="form-name" value="newsletter">
+          <input type="hidden" name="form-type" value="newsletter">
+          <input type="hidden" name="note_slug" value="">
+          <div class="field">
+            <label for="email-home">your email</label>
+            <input class="input" id="email-home" type="email" name="email"
+                   placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <button class="btn" type="submit">send it</button>
+        </form>
+      </div>
+    </section>
 
-      <!-- Products -->
-      <section class="home-section" aria-labelledby="products-heading">
-        <h2 id="products-heading" class="section-label">projects</h2>
-        <div class="terminal-block" role="region" aria-label="Current products">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">ls projects/</span>
-          </span>
-          <span class="t-out"><a href="https://sierrafy.dev" target="_blank" rel="noopener noreferrer">sierrafy/</a> — an opensource identity verification toolkit</span>
-          <span class="t-out"><a href="https://kontriticket.com" target="_blank" rel="noopener noreferrer">kontriticket/</a> — event registration and ticketing platform</span>
-          <span class="t-out"><a href="https://getwitap.netlify.app" target="_blank" rel="noopener noreferrer">witap/</a> — B2B payment gateway for Sierra Leone.</span>
-        </div>
-      </section>
-
-      <!-- Now snapshot (populated by index.js) -->
-      <section class="home-section" aria-labelledby="now-heading">
-        <h2 id="now-heading" class="section-label">now</h2>
-        <div
-          id="now-preview"
-          class="terminal-block"
-          role="region"
-          aria-label="Current status"
-          aria-live="polite"
-        >
-          <span class="state-loading u-mono">loading</span>
-        </div>
-      </section>
-
-      <!-- Notes preview (populated by index.js) -->
-      <section class="home-section" aria-labelledby="notes-heading">
-        <h2 id="notes-heading" class="section-label">field notes</h2>
-        <div id="notes-preview" aria-live="polite">
-          <span class="state-loading u-mono">loading</span>
-        </div>
-        <a href="notes.html" class="section-link">more notes</a>
-      </section>
-
-      <!-- How I Think preview -->
-      <section class="home-section" aria-labelledby="think-heading">
-        <h2 id="think-heading" class="section-label">philosophy</h2>
-        <div class="terminal-block" role="region" aria-label="Principles preview">
-          <span class="terminal-line">
-            <span class="t-prompt" aria-hidden="true">&gt;</span>
-            <span class="t-cmd">principles --short</span>
-          </span>
-          <span class="t-out">Optimize for constraints</span>
-          <span class="t-out">Clarity over cleverness</span>
-          <span class="t-out">Systems over features</span>
-        </div>
-        <a href="how-i-think.html" class="section-link">full operating system</a>
-      </section>
-
-    </div>
   </main>
 
-  <!-- Footer -->
   <footer class="site-footer">
-    <div class="page-wrapper">
-      <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
-      <div class="footer-social" aria-label="Social links" role="group">
-        <a href="https://github.com/SUBiango" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.648.5.5 5.648.5 12c0 5.084 3.292 9.395 7.863 10.916.575.106.787-.25.787-.556 0-.275-.012-1.188-.018-2.154-3.2.694-3.875-1.356-3.875-1.356-.525-1.337-1.281-1.694-1.281-1.694-1.05-.719.081-.706.081-.706 1.163.081 1.775 1.194 1.775 1.194 1.031 1.769 2.706 1.256 3.366.962.106-.75.406-1.256.737-1.544-2.556-.287-5.244-1.275-5.244-5.675 0-1.256.45-2.281 1.188-3.087-.119-.294-.519-1.475.112-3.075 0 0 .969-.313 3.175 1.181a11.067 11.067 0 0 1 5.775 0c2.206-1.494 3.175-1.181 3.175-1.181.631 1.6.231 2.781.112 3.075.738.806 1.188 1.831 1.188 3.087 0 4.412-2.694 5.381-5.263 5.662.419.363.794 1.075.794 2.169 0 1.569-.013 2.831-.013 3.213 0 .306.206.669.794.556A11.508 11.508 0 0 0 23.5 12c0-6.352-5.148-11.5-11.5-11.5Z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.25h2.75L16.75 9h-3.25V6.75c0-1.031.281-1.75 1.75-1.75h1.75V2.125A23.74 23.74 0 0 0 14.438 2C11.719 2 9.75 3.656 9.75 6.688V9H7v3.75h2.75V21h3.75Z"/></svg>
-        </a>
-        <a href="https://www.instagram.com/umarubiango/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.756 5.756 0 0 1 22 7.75v8.5A5.756 5.756 0 0 1 16.25 22h-8.5A5.756 5.756 0 0 1 2 16.25v-8.5A5.756 5.756 0 0 1 7.75 2Zm8.5 1.75h-8.5A4.004 4.004 0 0 0 3.75 7.75v8.5a4.004 4.004 0 0 0 4 4h8.5a4.004 4.004 0 0 0 4-4v-8.5a4.004 4.004 0 0 0-4-4Zm-4.25 2.5A5.75 5.75 0 1 1 6.25 12 5.756 5.756 0 0 1 12 6.25Zm0 1.75A4 4 0 1 0 16 12a4.004 4.004 0 0 0-4-4Zm6-2.125a1.125 1.125 0 1 1-1.125 1.125A1.125 1.125 0 0 1 18 5.875Z"/></svg>
-        </a>
-      </div>
-      <p>&copy; 2026 Umaru S. Biango</p>
+    <p class="footer-sign">thanks for scrolling all the way down.</p>
+    <div class="footer-row">
+      <span>© 2026 Umaru S. Biango · built light, for 3G</span>
+      <span class="footer-links">
+        <a href="mailto:hello@umarubiango.com">hello@umarubiango.com</a>
+        <a href="https://github.com/SUBiango" target="_blank" rel="me noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/umaru-sahr-biango-8898b2127/" target="_blank" rel="me noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/umarusahrbiango/" target="_blank" rel="me noopener">Instagram</a>
+        <a href="https://www.facebook.com/umaru.biango" target="_blank" rel="me noopener">Facebook</a>
+      </span>
     </div>
   </footer>
 
-  <script src="assets/js/terminal.js"></script>
-  <script src="assets/js/index.js"></script>
+</div>
 
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>
